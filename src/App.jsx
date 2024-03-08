@@ -4,8 +4,7 @@ import {
   createBrowserRouter
 } from 'react-router-dom'
 import './App.css'
-//import i18n from './i18n/i18n'
-//import { useTranslation } from 'react-i18next'
+import { TariffNameContextProvider } from './components/TariffNameContextProvider'
 import IndexedDailyPrices from './pages/IndexedDailyPrices'
 import IndexedHistoricPrices from './pages/IndexedHistoricPrices'
 import TestPage from './pages/TestPage'
@@ -16,8 +15,12 @@ const router = createBrowserRouter([
     element: <TestPage />,
   },
   {
-    path: "indexed-daily-prices",
-    element: <IndexedDailyPrices />,
+    path: "/indexed-daily-prices",
+    element: (
+      <TariffNameContextProvider>
+        <IndexedDailyPrices />
+      </TariffNameContextProvider>
+    ),
   },
   {
     path: "indexed-historic-prices",
@@ -26,8 +29,6 @@ const router = createBrowserRouter([
 ])
 
 function App() {
-  //const { t, i18n } = useTranslation()
-
   return (
     <React.StrictMode>
       <RouterProvider router={router} />
