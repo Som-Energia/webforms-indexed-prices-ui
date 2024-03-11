@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
-// import { useTranslation } from 'react-i18next'
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import {useTariffNameContext} from './TariffNameContextProvider'
-// import i18n from '../i18n/i18n'
+import { useTranslation } from 'react-i18next'
+import i18n from '../i18n/i18n'
+
 
 function TariffSelector() {
+  const {t} = useTranslation()
 
   const {tariffName, setTariffName} = useTariffNameContext()
 
@@ -44,57 +47,83 @@ function TariffSelector() {
     return 'white';
   }
 
+  const ButtonTariffSelectorTheme = createTheme({
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            '&:hover, &:focus': {
+              outline: 'none',
+              border: 0
+            },
+            fontFamily: 'Roboto, sans-serif',
+            borderRadius: 0,
+            textTransform: 'none',
+            lineHeight: '1.4em',
+            border: 0,
+            '@media (min-width: 600px)': {
+              width: '150px',
+              padding: '0.2em 0em 0.2em 0em'
+            },
+          },
+        },
+      },
+    },
+  });
+
   useEffect(() => {
     setTariffName(Tariffs.TARIFF_20TD);
   }, []);
 
   return (
-    <Stack 
+    <Stack
       direction={{ xs: 'column', sm: 'row' }}
-      spacing={{ xs: 1, sm: 2, md: 4 }} 
+      spacing={{ xs: 1, sm: 2, md: 6 }}
       justifyContent="center"
     >
-      <Button 
-        variant={variant.TARIFF_20TD}
-        sx={{ 
-          borderRadius: 0,
-          color: computeTextColor(variant.TARIFF_20TD),
-          background: computeBackgroundColor(variant.TARIFF_20TD),
-          '&:hover': {
-            backgroundColor: computeBackgroundColor(variant.TARIFF_20TD),
-          },
-        }}
-        onClick={() => handleClick(Tariffs.TARIFF_20TD)} >
-          2.0TD
-      </Button>
+      <ThemeProvider theme={ButtonTariffSelectorTheme}>
 
-      <Button 
-        variant={variant.TARIFF_20TD} 
-        sx={{ 
-          borderRadius: 0,
-          color: computeTextColor(variant.TARIFF_30TD),
-          background: computeBackgroundColor(variant.TARIFF_30TD),
-          '&:hover': {
-            backgroundColor: computeBackgroundColor(variant.TARIFF_30TD),
-          },
-        }}
-        onClick={() => handleClick(Tariffs.TARIFF_30TD)} >
-          3.0TD
-      </Button>
+        <Button
+          variant={variant.TARIFF_20TD}
+          sx={{
+            color: computeTextColor(variant.TARIFF_20TD),
+            background: computeBackgroundColor(variant.TARIFF_20TD),
+            '&:hover': {
+              backgroundColor: computeBackgroundColor(variant.TARIFF_20TD),
+            },
+          }}
+          onClick={() => handleClick(Tariffs.TARIFF_20TD)} >
+            2.0TD
+        </Button>
 
-      <Button 
-        variant={variant.SURPLUS_COMPENSATION} 
-        sx={{
-          borderRadius: 0,
-          color: computeTextColor(variant.SURPLUS_COMPENSATION),
-          background: computeBackgroundColor(variant.SURPLUS_COMPENSATION),
-          '&:hover': {
-            backgroundColor: computeBackgroundColor(variant.SURPLUS_COMPENSATION),
-          },
-        }}
-        onClick={() => handleClick(Tariffs.SURPLUS_COMPENSATION)}>
-          TARIFF_SELECTOR.SURPLUS_COMPENSATION
-      </Button>
+        <Button
+          variant={variant.TARIFF_20TD}
+          sx={{
+            color: computeTextColor(variant.TARIFF_30TD),
+            background: computeBackgroundColor(variant.TARIFF_30TD),
+            '&:hover': {
+              backgroundColor: computeBackgroundColor(variant.TARIFF_30TD),
+            },
+          }}
+          onClick={() => handleClick(Tariffs.TARIFF_30TD)} >
+            3.0TD
+        </Button>
+
+        <Button
+          variant={variant.SURPLUS_COMPENSATION}
+          sx={{
+            color: computeTextColor(variant.SURPLUS_COMPENSATION),
+            background: computeBackgroundColor(variant.SURPLUS_COMPENSATION),
+            '&:hover, &:focus': {
+              backgroundColor: computeBackgroundColor(variant.SURPLUS_COMPENSATION),
+            },
+          }}
+          onClick={() => handleClick(Tariffs.SURPLUS_COMPENSATION)}>
+            { t("TARIFF_SELECTOR.SURPLUS_COMPENSATION") }
+        </Button>
+
+      </ThemeProvider>
+
     </Stack>
   )
 }
