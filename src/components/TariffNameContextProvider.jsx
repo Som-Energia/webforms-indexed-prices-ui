@@ -1,10 +1,11 @@
 import React, { createContext, useState, useContext } from 'react'
-import Tariffs from '../data/tariff'
+import {DefaultTariff} from '../data/tariff'
 
 const TariffNameContext = createContext()
 
 export const TariffNameContextProvider = ({ children }) => {
-  const [tariffName, setTariffName] = useState(Tariffs.TARIFF_20TD);
+
+  const [tariffName, setTariffName] = useState(DefaultTariff);
 
   return (
     <TariffNameContext.Provider value={{ tariffName, setTariffName }}>

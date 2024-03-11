@@ -6,41 +6,29 @@ import {useTariffNameContext} from './TariffNameContextProvider'
 import { useTranslation } from 'react-i18next'
 import i18n from '../i18n/i18n'
 import { useParams } from 'react-router-dom'
-import Tariffs from '../data/tariff'
+import {Tariffs, DefaultTariff} from '../data/tariff'
 
 function TariffSelector() {
   const {t, i18n} = useTranslation()
   const {language} = useParams()
   const {tariffName, setTariffName} = useTariffNameContext()
 
-  const [variant, setVariant] = useState({
-    TARIFF_20TD: 'contained',
-    TARIFF_30TD: 'outlined',
-    SURPLUS_COMPENSATION: 'outlined',
-  })
+  const tariffsVariant = {}
+  for (const [key, value] of Object.entries(Tariffs)) {
+    tariffsVariant[key] = value == DefaultTariff? 'contained': 'outlined'
+  }
+  const [variant, setVariant] = useState(tariffsVariant)
 
   const handleClick = (tariffName) => {
-    setVariant(variant => ({
-      TARIFF_20TD: tariffName === Tariffs.TARIFF_20TD ? 'contained' : 'outlined',
-      TARIFF_30TD: tariffName === Tariffs.TARIFF_30TD ? 'contained' : 'outlined',
-      SURPLUS_COMPENSATION: tariffName === Tariffs.SURPLUS_COMPENSATION ? 'contained' : 'outlined',
-    }))
+    for (const [key, value] of Object.entries(Tariffs)) {
+      tariffsVariant[key] = value == tariffName? 'contained': 'outlined'
+    }
+    setVariant(tariffsVariant)
     setTariffName(tariffName)
   }
 
-  const computeBackgroundColor = (variant) => {
-    if (variant === 'contained') {
-      return '#BAC92A';
-    }
-    return '#666666';
-  }
-
-  const computeTextColor = (variant) => {
-    if (variant === 'contained') {
-      return 'black';
-    }
-    return 'white';
-  }
+  const computeBackgroundColor = (variant) => variant === 'contained' ? '#BAC92A' : '#666666'
+  const computeTextColor = (variant) => variant === 'contained' ? 'black' : 'white'
 
   const ButtonTariffSelectorTheme = createTheme({
     components: {
