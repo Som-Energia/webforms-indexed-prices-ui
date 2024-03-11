@@ -12,8 +12,11 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
+    "@modyfi/vite-plugin-yaml": "^1.1.0",
     "@mui/material": "^5.15.12",
     "@mui/styled-engine-sc": "^6.0.0-alpha.17",
+    "i18next": "^23.10.1",
+    "i18next-browser-languagedetector": "^7.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-i18next": "^14.0.5",
