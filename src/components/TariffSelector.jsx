@@ -58,7 +58,7 @@ function TariffSelector() {
             border: 0,
             '@media (min-width: 600px)': {
               width: '150px',
-              padding: '0.2em 0em 0.2em 0em'
+              padding: '0.4em 0em 0.4em 0em'
             },
           },
         },
@@ -78,44 +78,21 @@ function TariffSelector() {
     >
       <ThemeProvider theme={ButtonTariffSelectorTheme}>
 
-        <Button
-          variant={variant.TARIFF_20TD}
-          sx={{
-            color: computeTextColor(variant.TARIFF_20TD),
-            background: computeBackgroundColor(variant.TARIFF_20TD),
-            '&:hover': {
-              backgroundColor: computeBackgroundColor(variant.TARIFF_20TD),
-            },
-          }}
-          onClick={() => handleClick(Tariffs.TARIFF_20TD)} >
-            2.0TD
-        </Button>
-
-        <Button
-          variant={variant.TARIFF_20TD}
-          sx={{
-            color: computeTextColor(variant.TARIFF_30TD),
-            background: computeBackgroundColor(variant.TARIFF_30TD),
-            '&:hover': {
-              backgroundColor: computeBackgroundColor(variant.TARIFF_30TD),
-            },
-          }}
-          onClick={() => handleClick(Tariffs.TARIFF_30TD)} >
-            3.0TD
-        </Button>
-
-        <Button
-          variant={variant.SURPLUS_COMPENSATION}
-          sx={{
-            color: computeTextColor(variant.SURPLUS_COMPENSATION),
-            background: computeBackgroundColor(variant.SURPLUS_COMPENSATION),
-            '&:hover, &:focus': {
-              backgroundColor: computeBackgroundColor(variant.SURPLUS_COMPENSATION),
-            },
-          }}
-          onClick={() => handleClick(Tariffs.SURPLUS_COMPENSATION)}>
-            { t("TARIFF_SELECTOR.SURPLUS_COMPENSATION") }
-        </Button>
+        {Object.entries(Tariffs).map(([tariffKey, tariffName]) => (
+          <Button
+            variant={variant[tariffKey]}
+            key={tariffKey}
+            sx={{
+              color: computeTextColor(variant[tariffKey]),
+              background: computeBackgroundColor(variant[tariffKey]),
+              '&:hover': {
+                backgroundColor: computeBackgroundColor(variant[tariffKey]),
+              },
+            }}
+            onClick={() => handleClick(tariffName)} >
+            { t("TARIFF_SELECTOR." + tariffKey) }
+          </Button>
+        ))}
 
       </ThemeProvider>
 
