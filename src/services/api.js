@@ -1,8 +1,8 @@
 import axios from 'axios'
 
-const API_BASE_URL =
-  import.meta.env.VITE_APP_API_BASE_URL ||
-  window?.config?.API_BASE_URL.replace?.(/\/$/, '')
+const API_BASE_URL = 'http://0.0.0.0:5001'
+  // import.meta.env.VITE_APP_API_BASE_URL ||
+  // window?.config?.API_BASE_URL.replace?.(/\/$/, '')
 
 export const getIndexedTariffPrices = async ({ tariff, geoZone }) => {
   return axios({
