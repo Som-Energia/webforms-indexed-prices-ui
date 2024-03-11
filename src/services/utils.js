@@ -45,27 +45,38 @@ export function transformIndexedTariffPrices(indexedTariffPrices, calendarDay) {
   )
   let average = acum / mocked_indexedTariffPrices.curves.price_euros_kwh.length
 
+  const today = new Date()
+  today.setMinutes(0)
+  today.setSeconds(0)
+  today.setMilliseconds(0)
+
   // build the periods array of dicts
   let periods = []
   measured_data.forEach((data) => {
+    console.log("DATE:", new Date(data.date).toString())
+    console.log("Today:", today.toString())
+    const pre = today <= data?.date ? "" : "past_"
     // choose the "number" we need
     if (data.value + average * PERCENTAGE_MEAN < average) {
-      data['low'] = data.value
+      data[`${pre}low`] = data.value
     } else if (data.value - average * PERCENTAGE_MEAN > average) {
-      data['up'] = data.value
+      data[`${pre}up`] = data.value
     } else {
-      data['average'] = data.value
+      data[`${pre}average`] = data.value
     }
     periods.push(data)
   })
-  // afegir colors difuminats, i posar-los en funció de la data d'avui
+  // TODO: check where to define these colors
   return {
     fills: {
       low: '#cbdc49',
       average: '#71a150',
       up: '#778462',
+      past_low: '#f0faa5',
+      past_average: '#d6f7be',
+      past_up: '#a5b38f',
     },
-    keys: ['low', 'average', 'up'],
+    keys: ['low', 'average', 'up', 'past_low', 'past_average', 'past_up'],
     periods: periods,
   }
 }
