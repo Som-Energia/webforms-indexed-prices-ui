@@ -5,18 +5,13 @@ import Stack from '@mui/material/Stack'
 import {useTariffNameContext} from './TariffNameContextProvider'
 import { useTranslation } from 'react-i18next'
 import i18n from '../i18n/i18n'
-
+import { useParams } from 'react-router-dom'
+import Tariffs from '../data/tariff'
 
 function TariffSelector() {
-  const {t} = useTranslation()
-
+  const {t, i18n} = useTranslation()
+  const {language} = useParams()
   const {tariffName, setTariffName} = useTariffNameContext()
-
-  const Tariffs = {
-    TARIFF_20TD: 'tariff20TD',
-    TARIFF_30TD: 'tariff30TD',
-    SURPLUS_COMPENSATION: 'surplusCompensation',
-  };
 
   const [variant, setVariant] = useState({
     TARIFF_20TD: 'contained',
@@ -72,8 +67,8 @@ function TariffSelector() {
   });
 
   useEffect(() => {
-    setTariffName(Tariffs.TARIFF_20TD);
-  }, []);
+    i18n.changeLanguage(language)
+  }, [language]);
 
   return (
     <Stack

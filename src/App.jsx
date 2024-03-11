@@ -8,6 +8,8 @@ import { TariffNameContextProvider } from './components/TariffNameContextProvide
 import IndexedDailyPrices from './pages/IndexedDailyPrices'
 import IndexedHistoricPrices from './pages/IndexedHistoricPrices'
 import TestPage from './pages/TestPage'
+import i18n from './i18n/i18n'
+
 
 const router = createBrowserRouter([
   {
@@ -15,7 +17,7 @@ const router = createBrowserRouter([
     element: <TestPage />,
   },
   {
-    path: "/indexed-daily-prices",
+    path: "/:language/indexed-daily-prices",
     element: (
       <TariffNameContextProvider>
         <IndexedDailyPrices />
@@ -23,7 +25,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: "indexed-historic-prices",
+    path: "/:language/indexed-historic-prices",
     element: <IndexedHistoricPrices />,
   },
 ])
