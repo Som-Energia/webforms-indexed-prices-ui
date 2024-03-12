@@ -25,7 +25,7 @@ export default function IndexedDailyPrices() {
     <>
       {/* TODO: Y Axis legend */}
       {indexedTariffPrices ? (
-        <Chart data={indexedTariffPrices} lang="ca" period="DAILY" type="BAR" />
+        <Chart data={indexedTariffPrices} lang="ca" period="DAILY" type="BAR" Ylegend={'€/kWh'} showTooltipKeys={false} />
       ) : (
         <Loading />
       )}
