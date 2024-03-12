@@ -1,6 +1,6 @@
 export const Tariffs = {
-    TARIFF_20TD: 'tariff20TD',
-    TARIFF_30TD: 'tariff30TD',
+    TARIFF_20TD: '2.0TD',
+    TARIFF_30TD: '3.0TD',
     SURPLUS_COMPENSATION: 'surplusCompensation',
   };
 
