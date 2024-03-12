@@ -1,1 +1,4 @@
-{}
+TARIFF_SELECTOR:
+  SURPLUS_COMPENSATION: Soberakinen konpentsazioa
+  TARIFF_30TD: 3.0TD
+  TARIFF_20TD: 2.0TD

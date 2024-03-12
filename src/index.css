@@ -20,7 +20,7 @@ body {
   margin: 0;
   display: flex;
   place-items: center;
-  min-height: 100vh;
+  min-height: 10vh;
 }
 
 @media (prefers-color-scheme: light) {
@@ -35,4 +35,3 @@ body {
     background-color: #111;
   }
 }
-
