@@ -18,3 +18,18 @@ export const getIndexedTariffPrices = async ({ tariff, geoZone }) => {
     return response?.data?.data
   })
 }
+
+export const getCompensationIndexedPrices = async ({ geoZone }) => {
+  return axios({
+    method: 'GET',
+    url: `${API_BASE_URL}/data/compensation_indexed_prices`,
+    withCredentials: false,
+    params: {
+      geo_zone: geoZone,
+    },
+  }).then((response) => {
+    // TODO: catch errors
+    return response?.data?.data
+  })
+}
+

@@ -1,14 +1,12 @@
-import dayjs from "dayjs"
-
+import dayjs from 'dayjs'
 
 const PERIOD = 'DAILY'
 // Percentage for color gradient according to the mean price for the last 7 days
-const PERCENTAGE_MEAN = 10 / 100  // 10%
+const PERCENTAGE_MEAN = 10 / 100 // 10%
 
-
-export function transformIndexedTariffPrices(indexedTariffPrices, calendarDay) {
-  console.log('indexedTariffPrices', indexedTariffPrices)
-  console.log('curves', indexedTariffPrices.curves)
+export function transformIndexedTariffPrices(firstDate, calendarDay, prices) {
+  console.log('first date', firstDate)
+  console.log('curves', prices)
   // TODO: remove this, we use these mocked values while we do not have data
   let mocked_indexedTariffPrices = {
     first_date: '2023-10-29',
@@ -22,28 +20,17 @@ export function transformIndexedTariffPrices(indexedTariffPrices, calendarDay) {
     },
   }
 
-  const first_date = new Date(mocked_indexedTariffPrices.first_date)
+  const first_date = new Date(firstDate)
   first_date.setHours(0)
   const calendar_day = new Date(calendarDay)
-  const [startIndex, endIndex] = sliceIndexes(
-    first_date,
-    PERIOD,
-    dayjs(calendar_day),
-  )
-  var measured_data = timeSlice(
-    first_date,
-    mocked_indexedTariffPrices.curves.price_euros_kwh,
-    startIndex,
-    endIndex,
-  )
+  const [startIndex, endIndex] = sliceIndexes(first_date, PERIOD, dayjs(calendar_day))
 
-  let acum = mocked_indexedTariffPrices.curves.price_euros_kwh.reduce(
-    (accumulator, currentValue) => {
-      return accumulator + currentValue
-    },
-    0,
-  )
-  let average = acum / mocked_indexedTariffPrices.curves.price_euros_kwh.length
+  var measured_data = timeSlice(first_date, prices, startIndex, endIndex)
+
+  let acum = prices.reduce((accumulator, currentValue) => {
+    return accumulator + currentValue
+  }, 0)
+  let average = acum / prices.length
 
   const today = new Date()
   today.setMinutes(0)
