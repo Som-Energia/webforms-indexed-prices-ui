@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next'
 import i18n from '../i18n/i18n'
 import { useParams } from 'react-router-dom'
 import {Tariffs, DefaultTariff} from '../data/tariff'
+import plausible from '../utils/plausible'
 
 function TariffSelector() {
   const {t, i18n} = useTranslation()
@@ -25,6 +26,7 @@ function TariffSelector() {
     }
     setVariant(tariffsVariant)
     setTariffName(tariffName)
+    plausible.trackEvent('IndexedTariffSelectorButton-' + tariffName)
   }
 
   const computeBackgroundColor = (variant) => variant === 'contained' ? '#BAC92A' : '#666666'
