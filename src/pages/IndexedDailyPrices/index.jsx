@@ -39,7 +39,6 @@ export default function IndexedDailyPrices() {
     }
     getPrices(tariffName)
   }, [tariffName])
-
   return (
     <>
       <TariffSelector />
@@ -47,7 +46,6 @@ export default function IndexedDailyPrices() {
       {indexedTariffPrices ? (
         <Chart
           data={indexedTariffPrices}
-          lang="ca"
           period="DAILY"
           type="BAR"
           Ylegend={'€/kWh'}
