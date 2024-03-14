@@ -4,7 +4,6 @@ import Loading from '@somenergia/somenergia-ui/Loading'
 import { getCompensationIndexedPrices, getIndexedTariffPrices } from '../../services/api'
 import { transformIndexedTariffPrices } from '../../services/utils'
 import TariffSelector from '../../components/TariffSelector'
-import { Container } from '@mui/material'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
 
 export default function IndexedDailyPrices() {
@@ -13,8 +12,7 @@ export default function IndexedDailyPrices() {
 
   useEffect(() => {
     const getPrices = async (tariffName) => {
-      console.log('tariffName', tariffName)
-      const calendarDay = '2023-11-22' //TODO: get that day from a date picker
+      const calendarDay = '2024-03-14' //TODO: get that day from a date picker
 
       if (tariffName === 'surplusCompensation') {
         const data = await getCompensationIndexedPrices({
@@ -42,12 +40,10 @@ export default function IndexedDailyPrices() {
     getPrices(tariffName)
   }, [tariffName])
 
-  console.log(indexedTariffPrices)
-
   return (
-    <Container maxWidth="md" disableGutters={true}>
+    <>
       <TariffSelector />
-      {/* TODO: Y Axis legend */}
+      <br />
       {indexedTariffPrices ? (
         <Chart
           data={indexedTariffPrices}
@@ -60,6 +56,6 @@ export default function IndexedDailyPrices() {
       ) : (
         <Loading />
       )}
-    </Container>
+    </>
   )
 }

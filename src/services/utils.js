@@ -5,21 +5,6 @@ const PERIOD = 'DAILY'
 const PERCENTAGE_MEAN = 10 / 100 // 10%
 
 export function transformIndexedTariffPrices(firstDate, calendarDay, prices) {
-  console.log('first date', firstDate)
-  console.log('curves', prices)
-  // TODO: remove this, we use these mocked values while we do not have data
-  let mocked_indexedTariffPrices = {
-    first_date: '2023-10-29',
-    last_date: '2023-10-30',
-    curves: {
-      maturity: [2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4],
-      price_euros_kwh: [
-        1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 4,
-        1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4, 5, 1, 2, 3, 4
-      ],
-    },
-  }
-
   const first_date = new Date(firstDate)
   first_date.setHours(0)
   const calendar_day = new Date(calendarDay)
@@ -40,9 +25,7 @@ export function transformIndexedTariffPrices(firstDate, calendarDay, prices) {
   // build the periods array of dicts
   let periods = []
   measured_data.forEach((data) => {
-    console.log("DATE:", new Date(data.date).toString())
-    console.log("Today:", today.toString())
-    const pre = today <= data?.date ? "" : "past_"
+    const pre = today <= data?.date ? '' : 'past_'
     // choose the "number" we need
     if (data.value + average * PERCENTAGE_MEAN < average) {
       data[`${pre}low`] = data.value
@@ -97,7 +80,6 @@ export function timeSlice(timeOffset, values, indexStart, indexEnd) {
 
 export function sliceIndexes(offsetDate, period, currentTime) {
   var [startTime, endTime] = timeInterval(period, currentTime)
-  console.log("Start and end time:", startTime, endTime)
   var startIndex = time2index(offsetDate, startTime)
   var endIndex = time2index(offsetDate, endTime)
   return [startIndex, endIndex]
@@ -109,35 +91,32 @@ export function timeInterval(scope, current_date) {
   start.setMinutes(0)
   start.setSeconds(0)
   start.setMilliseconds(0)
-  if (scope === "MONTHLY") {
+  if (scope === 'MONTHLY') {
     start.setDate(1)
   }
-  if (scope === "YEARLY") {
+  if (scope === 'YEARLY') {
     start.setDate(1) // Month days are 1 based
     start.setMonth(0) // Month are 0 based
   }
-  if (scope === "WEEKLY") {
+  if (scope === 'WEEKLY') {
     var weekday_shift = (start.getDay() + 6) % 7
     start.setDate(start.getDate() - weekday_shift)
   }
 
   const end = new Date(start)
   switch (scope) {
-    case "DAILY":
-      end.setDate(end.getDate()+1)
+    case 'DAILY':
+      end.setDate(end.getDate() + 1)
       break
-    case "MONTHLY":
-      end.setMonth(end.getMonth()+1)
+    case 'MONTHLY':
+      end.setMonth(end.getMonth() + 1)
       break
-    case "YEARLY":
-      end.setFullYear(end.getFullYear()+1)
+    case 'YEARLY':
+      end.setFullYear(end.getFullYear() + 1)
       break
-    case "WEEKLY":
-      end.setDate(end.getDate()+7)
+    case 'WEEKLY':
+      end.setDate(end.getDate() + 7)
       break
   }
-  return [
-    start,
-    end,
-  ]
+  return [start, end]
 }
