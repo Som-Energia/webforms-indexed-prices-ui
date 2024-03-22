@@ -66,6 +66,7 @@ export default function IndexedDailyPrices() {
           type="BAR"
           Ylegend={'€/kWh'}
           showTooltipKeys={false}
+          referenceLineData={indexedTariffPrices.referenceLineData}
         />
         <Box>
           <SumPricesDisplay

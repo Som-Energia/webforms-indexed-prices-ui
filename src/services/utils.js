@@ -1,7 +1,7 @@
 import { dateTimePickerTabsClasses } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 
-const PERIOD = 'DAILY'
+const PERIOD = 'WEEKLY'
 // Percentage for color gradient according to the mean price for the last 7 days
 const PERCENTAGE_MEAN = 10 / 100 // 10%
 
@@ -20,6 +20,27 @@ export function computeLimitDate(selected_day, first_date) {
   return limit_date
 }
 
+function wrongParameterValidation(fromDate, selectedDate, prices) {
+  const first_date = new Date(fromDate)
+  first_date.setHours(0)
+  const selected_day = new Date(selectedDate)
+  selected_day.setHours(0)
+
+  if (fromDate === '' || selectedDate === '') {
+    return true
+  }
+
+  if (prices.length === 0) {
+    return true
+  }
+
+  if (first_date > selected_day) {
+    return true
+  }
+
+  return false
+}
+
 /**
  * Computes totals based on provided parameters.
  * @param {string} fromDate - The starting date.
@@ -29,30 +50,35 @@ export function computeLimitDate(selected_day, first_date) {
  */
 export function computeTotals(fromDate, selectedDate, prices) {
   let totalPrices = {
-    AVERAGE: '0',
-    MAX: '0',
     MIN: '0',
+    MAX: '0',
+    AVERAGE: '0',
     WEEKLY_AVERAGE: '0'
   }
 
-  if (fromDate === '' || selectedDate === '') {
+  if (wrongParameterValidation(fromDate, selectedDate, prices)) {
     return totalPrices
   }
 
-  if (prices.length === 0) {
-    return totalPrices
+  let { acum_week, lastWeekPrices, acum_day, dayPrices } = computeBaseValues(fromDate, selectedDate, prices)
+
+  if (acum_week > 0) {
+    totalPrices['WEEKLY_AVERAGE'] = String((acum_week / lastWeekPrices.length).toFixed(6))
+  }
+  if (acum_day > 0) {
+    totalPrices['AVERAGE'] = String((acum_day / dayPrices.length).toFixed(6))
+    totalPrices['MAX'] = String((Math.max(...dayPrices.map(item => item.value))).toFixed(6))
+    totalPrices['MIN'] = String((Math.min(...dayPrices.map(item => item.value))).toFixed(6))
   }
 
+  return totalPrices
+}
+
+function computeBaseValues(fromDate, selectedDate, prices) {
   const first_date = new Date(fromDate)
   first_date.setHours(0)
-
   const selected_day = new Date(selectedDate)
   selected_day.setHours(0)
-
-  if (first_date > selected_day) {
-    return totalPrices
-  }
-
   const limit_date = computeLimitDate(selected_day, first_date)
 
   const measured_data = getMeasuredData(limit_date, selected_day, prices)
@@ -65,57 +91,36 @@ export function computeTotals(fromDate, selectedDate, prices) {
     current_date.setHours(0)
     const current_date_day = current_date.getDate()
 
-    lastWeekPrices.push(data.value)
+    lastWeekPrices.push(data)
     if (current_date_day == selected_day.getDate())
-      dayPrices.push(data.value)
+      dayPrices.push(data)
   })
 
   let acum_week = lastWeekPrices.reduce((accumulator, currentValue) => {
-    return accumulator + currentValue
+    return accumulator + currentValue.value
   }, 0)
-
   let acum_day = dayPrices.reduce((accumulator, currentValue) => {
-    return accumulator + currentValue
+    return accumulator + currentValue.value
   }, 0)
 
-  if (acum_week > 0) {
-    totalPrices['WEEKLY_AVERAGE'] = String((acum_week / lastWeekPrices.length).toFixed(6))
-  }
-  if (acum_day > 0) {
-    totalPrices['AVERAGE'] = String((acum_day / dayPrices.length).toFixed(6))
-    totalPrices['MAX'] = String((Math.max(...dayPrices)).toFixed(6))
-    totalPrices['MIN'] = String((Math.min(...dayPrices)).toFixed(6))
-  }
-
-  return totalPrices
+  return { acum_week, lastWeekPrices, acum_day, dayPrices }
 }
 
-export function transformIndexedTariffPrices(firstDate, calendarDay, prices) {
-  const first_date = new Date(firstDate)
-  first_date.setHours(0)
-  const calendar_day = new Date(calendarDay)
-  const [startIndex, endIndex] = sliceIndexes(first_date, PERIOD, dayjs(calendar_day))
-
-  var measured_data = timeSlice(first_date, prices, startIndex, endIndex)
-
-  let acum = prices.reduce((accumulator, currentValue) => {
-    return accumulator + currentValue
-  }, 0)
-  let average = acum / prices.length
-
-  const today = new Date()
-  today.setMinutes(0)
-  today.setSeconds(0)
-  today.setMilliseconds(0)
+export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
+  let { acum_week, lastWeekPrices, acum_day, dayPrices } = computeBaseValues(fromDate, selectedDate, prices)
+  let week_average = acum_week / lastWeekPrices.length
+  let day_average = acum_day / dayPrices.length
+  const today = new Date();
+  today.setMinutes(0, 0, 0);
 
   // build the periods array of dicts
   let periods = []
-  measured_data.forEach((data) => {
+  dayPrices.forEach((data) => {
     const pre = today <= data?.date ? '' : 'past_'
     // choose the "number" we need
-    if (data.value + average * PERCENTAGE_MEAN < average) {
+    if (data.value + week_average * PERCENTAGE_MEAN < week_average) {
       data[`${pre}low`] = data.value
-    } else if (data.value - average * PERCENTAGE_MEAN > average) {
+    } else if (data.value - week_average * PERCENTAGE_MEAN > week_average) {
       data[`${pre}up`] = data.value
     } else {
       data[`${pre}average`] = data.value
@@ -134,12 +139,25 @@ export function transformIndexedTariffPrices(firstDate, calendarDay, prices) {
     },
     keys: ['low', 'average', 'up', 'past_low', 'past_average', 'past_up'],
     periods: periods,
+    referenceLineData: [
+      {
+        value: week_average,
+        color: 'blue',
+        stroke: '3 3',
+        strokeWidth: 2,
+      },
+      {
+        value: day_average,
+        color: 'blue',
+        stroke: '0',
+        strokeWidth: 2,
+      }
+    ]
   }
 }
 
 // FROM SOM REPRESENTA
-// TODO: move this to somenergia-ui ?
-
+// TODO: move this to somenergia-ui
 export function time2index(referenceTimestamp, timestamp) {
   return (new Date(timestamp) - new Date(referenceTimestamp)) / 60 / 60 / 1000
 }

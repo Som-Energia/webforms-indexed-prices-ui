@@ -1,12 +1,12 @@
 import React from 'react'
 import { beforeEach, afterEach, describe, expect, test, it } from 'vitest'
-import { computeTotals, getMeasuredData, computeLimitDate } from './utils'
+import { computeTotals, getMeasuredData, computeLimitDate, transformIndexedTariffPrices } from './utils'
 
 describe('getMeasuredData', () => {
   describe('when single day requested', () => {
-    it('returns single day prices', () => {  
-        const a_valid_price = 0.1       
-        const totalWeekPriceValues = 168
+    it('returns single day prices', () => {
+        const a_valid_price = 0.1
+        const totalWeekPriceValues = 360
         const prices = Array.from({ length: totalWeekPriceValues }, (_, index) => a_valid_price);
         const limit_date = new Date('2024-03-20')
         const selected_day = new Date('2024-03-21')
@@ -16,10 +16,22 @@ describe('getMeasuredData', () => {
         expect(prices_data.length).toBe(24)
     })
   })
+  describe('when single day requested', () => {
+    it('returns one week prices', () => {
+        const a_valid_price = 0.1
+        const totalWeekPriceValues = 360
+        const prices = Array.from({ length: totalWeekPriceValues }, (_, index) => a_valid_price);
+        const limit_date = new Date('2024-03-08')
+        const selected_day = new Date('2024-03-14')
+
+        const prices_data = getMeasuredData(limit_date, selected_day, prices);
+
+        expect(prices_data.length).toBe(168)
+    })
+  })
 })
 
 describe('computeLimitDate', () => {
-
   describe('when limit_date is inside the valid range', () => {
     it('returns date into range', () => {  
         const selected_day = new Date('2024-03-27')
@@ -56,7 +68,22 @@ describe('computeLimitDate', () => {
 })
 
 describe('computeTotals', () => {
-  
+  describe('happy path', () => {
+    describe('when one week prices is requested', () => {
+      it('returns computation of the prices', () => {
+          const a_valid_price = 0.1
+          const prices = Array.from({ length:  168 }, (_, index) => a_valid_price)
+          const expectedtotalPrices = {
+            AVERAGE: '0.100000',
+            MAX: '0.100000',
+            MIN: '0.100000',
+            WEEKLY_AVERAGE: '0.100000'
+          }
+          expect(computeTotals('2024-03-03','2024-03-10', prices)).toStrictEqual(expectedtotalPrices)
+      })
+    })
+  })
+
   describe('validations', () => {
     const expectedEmptyTotalPrices = {
         AVERAGE: '0',
@@ -88,21 +115,24 @@ describe('computeTotals', () => {
       })
     })
   })
+})
 
+describe('transformIndexedTariffPrices', () => {
   describe('happy path', () => {
-    describe('when one week prices is requested', () => {
-      it('returns computation of the prices', () => {
-          const a_valid_price = 0.1
-          const prices = Array.from({ length:  168 }, (_, index) => a_valid_price)
-          const expectedtotalPrices = {
-            AVERAGE: '0.100000',
-            MAX: '0.100000',
-            MIN: '0.100000',
-            WEEKLY_AVERAGE: '0.100000'    
-          }
-          expect(computeTotals('2024-03-03','2024-03-10', prices)).toStrictEqual(expectedtotalPrices)
-      })   
+    describe('when a valid range with values is given', () => {
+      it('returns a valid data to fill the chart', () => {
+        const fromDate = '2024-03-01'
+        const selectedDate = '2024-03-08'
+        const a_valid_price = 0.1
+        const pricesDefaultLength = 360
+        const prices = Array.from({ length:  pricesDefaultLength }, (_, index) => a_valid_price)
+
+        const result = transformIndexedTariffPrices(fromDate, selectedDate, prices)
+
+        const expected_result_keys = ["fills", "keys", "periods", "referenceLineData"]
+        expect(Object.keys(result)).toStrictEqual(expected_result_keys)
+        expect(result['periods'].length).toBe(24)
+      })
     })
   })
-
 })
