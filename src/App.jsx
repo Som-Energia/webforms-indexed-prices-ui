@@ -1,10 +1,12 @@
 import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
+import { ThemeProvider } from '@mui/material/styles'
 import './App.css'
 import { TariffNameContextProvider } from './components/TariffNameContextProvider'
 import IndexedDailyPrices from './pages/IndexedDailyPrices'
 import IndexedHistoricPrices from './pages/IndexedHistoricPrices'
 import TestPage from './pages/TestPage'
+import SomenergiaTheme from './components/SomenergiaTheme'
 
 const router = createBrowserRouter([
   {
@@ -28,7 +30,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <React.StrictMode>
-      <RouterProvider router={router} />
+      <ThemeProvider theme={SomenergiaTheme}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
     </React.StrictMode>
   )
 }
