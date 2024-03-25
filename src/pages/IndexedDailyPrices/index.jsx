@@ -8,6 +8,7 @@ import { transformIndexedTariffPrices, computeTotals } from '../../services/util
 import TariffSelector from '../../components/TariffSelector'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
 import { useTranslation } from 'react-i18next'
+import SomDatePicker from '@somenergia/somenergia-ui/SomDatePicker'
 
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
@@ -100,6 +101,7 @@ export default function IndexedDailyPrices() {
   return (
     <>
       <TariffSelector />
+      <SomDatePicker/>
       <br />
       {indexedTariffPrices ? (
         <>
