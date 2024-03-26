@@ -2,3 +2,6 @@ TARIFF_SELECTOR:
   SURPLUS_COMPENSATION: Compensación de excedentes
   TARIFF_30TD: 3.0TD
   TARIFF_20TD: 2.0TD
+CHART:
+  DAILY_AVERAGE_LEGEND: Promedio de los 24 precios del día
+  WEEKLY_AVERAGE_LEGEND: Promedio de los últimos 7 días

@@ -139,20 +139,8 @@ export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
     },
     keys: ['low', 'average', 'up', 'past_low', 'past_average', 'past_up'],
     periods: periods,
-    referenceLineData: [
-      {
-        value: week_average,
-        color: 'blue',
-        stroke: '3 3',
-        strokeWidth: 2,
-      },
-      {
-        value: day_average,
-        color: 'blue',
-        stroke: '0',
-        strokeWidth: 2,
-      }
-    ]
+    week_average: week_average,
+    day_average: day_average
   }
 }
 

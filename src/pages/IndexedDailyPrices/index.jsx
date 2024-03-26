@@ -7,6 +7,7 @@ import { getCompensationIndexedPrices, getIndexedTariffPrices } from '../../serv
 import { transformIndexedTariffPrices, computeTotals } from '../../services/utils'
 import TariffSelector from '../../components/TariffSelector'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
+import { useTranslation } from 'react-i18next'
 
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
@@ -54,6 +55,25 @@ export default function IndexedDailyPrices() {
     }
     getPrices(tariffName)
   }, [tariffName])
+
+  const { t } = useTranslation()
+  const referenceLineData =[
+    {
+      value: indexedTariffPrices.week_average,
+      color: 'blue',
+      stroke: '3 3',
+      strokeWidth: 2,
+      text: t('CHART.WEEKLY_AVERAGE_LEGEND')
+    },
+    {
+      value: indexedTariffPrices.day_average,
+      color: 'blue',
+      stroke: '0',
+      strokeWidth: 2,
+      text: t('CHART.DAILY_AVERAGE_LEGEND')
+    }
+  ]
+
   return (
     <>
       <TariffSelector />
@@ -65,8 +85,9 @@ export default function IndexedDailyPrices() {
           period="DAILY"
           type="BAR"
           Ylegend={'€/kWh'}
+          legend={true}
           showTooltipKeys={false}
-          referenceLineData={indexedTariffPrices.referenceLineData}
+          referenceLineData={referenceLineData}
         />
         <Box>
           <SumPricesDisplay
