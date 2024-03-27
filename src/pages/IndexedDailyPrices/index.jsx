@@ -9,16 +9,20 @@ import TariffSelector from '../../components/TariffSelector'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
 import { useTranslation } from 'react-i18next'
 import SomDatePicker from '@somenergia/somenergia-ui/SomDatePicker'
+import Box from '@mui/material/Box'
+import dayjs from 'dayjs'
 
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
+
   const [indexedTariffPrices, setIndexedTariffPrices] = useState(false)
   const [totalPrices, setTotalPrices] = useState(false)
+  const [firstDate, setfirstDate] = useState(null)
+  const [prices, setPrices] = useState(null)
+  const [calendarDay, setCalendarDay] = useState(dayjs().endOf('day'))
 
   useEffect(() => {
     const getPrices = async (tariffName) => {
-      const calendarDay = '2024-03-14' //TODO: get that day from a date picker
-
       if (tariffName === 'surplusCompensation') {
         const data = await getCompensationIndexedPrices({
           geoZone: 'PENINSULA',
@@ -28,6 +32,8 @@ export default function IndexedDailyPrices() {
           calendarDay,
           data.curves.compensation_euros_kwh,
         )
+        setfirstDate(data.first_date)
+        setPrices(data.curves.compensation_euros_kwh)
         setIndexedTariffPrices(transformedData)
         const computedTotals = computeTotals(
           data.first_date,
@@ -45,6 +51,9 @@ export default function IndexedDailyPrices() {
           calendarDay,
           data.curves.price_euros_kwh,
         )
+
+        setfirstDate(data.first_date)
+        setPrices(data.curves.price_euros_kwh)
         setIndexedTariffPrices(transformedData)
         const computedTotals = computeTotals(
           data.first_date,
@@ -74,6 +83,12 @@ export default function IndexedDailyPrices() {
       text: t('CHART.DAILY_AVERAGE_LEGEND')
     }
   ]
+  useEffect(() => {
+    if (firstDate) {
+      const transformedData = transformIndexedTariffPrices(firstDate, calendarDay, prices)
+      setIndexedTariffPrices(transformedData)
+    }
+  }, [calendarDay])
 
   const totalPricesData = [
     {
@@ -101,8 +116,15 @@ export default function IndexedDailyPrices() {
   return (
     <>
       <TariffSelector />
-      <SomDatePicker/>
-      <br />
+      <Box margin={8} display="flex" justifyContent="center" alignItems="center">
+        <SomDatePicker
+          firstDate={dayjs().subtract(7, 'day').startOf('day')}
+          lastDate={dayjs().add(1, 'day').endOf('day')}
+          period="DAILY"
+          currentTime={calendarDay}
+          setCurrentTime={setCalendarDay}
+        />
+      </Box>
       {indexedTariffPrices ? (
         <>
         <Chart
