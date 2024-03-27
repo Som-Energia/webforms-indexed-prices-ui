@@ -8,6 +8,9 @@ const SomenergiaTheme = createTheme({
     primary: {
       main: '#BAC92A',
     },
+    secondary:{
+      main: '#666666'
+    }
   },
   components: {
     MuiButton: {
