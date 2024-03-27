@@ -27,12 +27,7 @@ export default function IndexedDailyPrices() {
         const data = await getCompensationIndexedPrices({
           geoZone: 'PENINSULA',
         })
-        const transformedData = transformIndexedTariffPrices(
-          data.first_date,
-          calendarDay,
-          data.curves.compensation_euros_kwh,
-        )
-        setfirstDate(data.first_date)
+        setFirstDate(data.first_date)
         setPrices(data.curves.compensation_euros_kwh)
         setIndexedTariffPrices(transformedData)
         const computedTotals = computeTotals(
@@ -46,13 +41,7 @@ export default function IndexedDailyPrices() {
           tariff: tariffName,
           geoZone: 'PENINSULA',
         })
-        const transformedData = transformIndexedTariffPrices(
-          data.first_date,
-          calendarDay,
-          data.curves.price_euros_kwh,
-        )
-
-        setfirstDate(data.first_date)
+        setFirstDate(data.first_date)
         setPrices(data.curves.price_euros_kwh)
         setIndexedTariffPrices(transformedData)
         const computedTotals = computeTotals(
@@ -83,12 +72,10 @@ export default function IndexedDailyPrices() {
       text: t('CHART.DAILY_AVERAGE_LEGEND')
     }
   ]
-  useEffect(() => {
-    if (firstDate) {
-      const transformedData = transformIndexedTariffPrices(firstDate, calendarDay, prices)
-      setIndexedTariffPrices(transformedData)
-    }
-  }, [calendarDay])
+  const indexedTariffPrices = React.useMemo(()=>{
+    if (!firstDate) return false
+    return transformIndexedTariffPrices(firstDate, calendarDay, prices)
+  }, [firstDate, calendarDay, prices])
 
   const totalPricesData = [
     {
