@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import Box from '@mui/material/Box'
 import Chart from '@somenergia/somenergia-ui/Chart'
 import SumPricesDisplay from '@somenergia/somenergia-ui/SumPricesDisplay'
 import Loading from '@somenergia/somenergia-ui/Loading'
@@ -15,9 +14,8 @@ import dayjs from 'dayjs'
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
 
-  const [indexedTariffPrices, setIndexedTariffPrices] = useState(false)
   const [totalPrices, setTotalPrices] = useState(false)
-  const [firstDate, setfirstDate] = useState(null)
+  const [firstDate, setFirstDate] = useState(null)
   const [prices, setPrices] = useState(null)
   const [calendarDay, setCalendarDay] = useState(dayjs().endOf('day'))
 
@@ -29,7 +27,6 @@ export default function IndexedDailyPrices() {
         })
         setFirstDate(data.first_date)
         setPrices(data.curves.compensation_euros_kwh)
-        setIndexedTariffPrices(transformedData)
         const computedTotals = computeTotals(
           data.first_date,
           calendarDay,
@@ -43,7 +40,6 @@ export default function IndexedDailyPrices() {
         })
         setFirstDate(data.first_date)
         setPrices(data.curves.price_euros_kwh)
-        setIndexedTariffPrices(transformedData)
         const computedTotals = computeTotals(
           data.first_date,
           calendarDay,
