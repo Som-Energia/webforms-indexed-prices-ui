@@ -14,10 +14,10 @@ import dayjs from 'dayjs'
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
 
-  const [totalPrices, setTotalPrices] = useState(false)
   const [firstDate, setFirstDate] = useState(null)
   const [prices, setPrices] = useState(null)
   const [calendarDay, setCalendarDay] = useState(dayjs().endOf('day'))
+  const { t } = useTranslation()
 
   useEffect(() => {
     const getPrices = async (tariffName) => {
@@ -27,12 +27,6 @@ export default function IndexedDailyPrices() {
         })
         setFirstDate(data.first_date)
         setPrices(data.curves.compensation_euros_kwh)
-        const computedTotals = computeTotals(
-          data.first_date,
-          calendarDay,
-          data.curves.compensation_euros_kwh,
-        )
-        setTotalPrices(computedTotals)
       } else {
         const data = await getIndexedTariffPrices({
           tariff: tariffName,
@@ -40,38 +34,37 @@ export default function IndexedDailyPrices() {
         })
         setFirstDate(data.first_date)
         setPrices(data.curves.price_euros_kwh)
-        const computedTotals = computeTotals(
-          data.first_date,
-          calendarDay,
-          data.curves.price_euros_kwh,
-        )
-        setTotalPrices(computedTotals)
       }
     }
     getPrices(tariffName)
   }, [tariffName])
 
-  const { t } = useTranslation()
-  const referenceLineData =[
+  const totalPrices = React.useMemo(() => {
+    if (!firstDate) return false
+    return computeTotals(firstDate, calendarDay, prices)
+  }, [firstDate, calendarDay, prices])
+
+  const indexedTariffPrices = React.useMemo(() => {
+    if (!firstDate) return false
+    return transformIndexedTariffPrices(firstDate, calendarDay, prices)
+  }, [firstDate, calendarDay, prices])
+
+  const referenceLineData = [
     {
       value: indexedTariffPrices.week_average,
       color: 'blue',
       stroke: '3 3',
       strokeWidth: 2,
-      text: t('CHART.WEEKLY_AVERAGE_LEGEND')
+      text: t('CHART.WEEKLY_AVERAGE_LEGEND'),
     },
     {
       value: indexedTariffPrices.day_average,
       color: 'blue',
       stroke: '0',
       strokeWidth: 2,
-      text: t('CHART.DAILY_AVERAGE_LEGEND')
-    }
+      text: t('CHART.DAILY_AVERAGE_LEGEND'),
+    },
   ]
-  const indexedTariffPrices = React.useMemo(()=>{
-    if (!firstDate) return false
-    return transformIndexedTariffPrices(firstDate, calendarDay, prices)
-  }, [firstDate, calendarDay, prices])
 
   const totalPricesData = [
     {
@@ -106,6 +99,7 @@ export default function IndexedDailyPrices() {
           period="DAILY"
           currentTime={calendarDay}
           setCurrentTime={setCalendarDay}
+          lang={'ca'}
         />
       </Box>
       {indexedTariffPrices ? (
@@ -122,8 +116,7 @@ export default function IndexedDailyPrices() {
         <Box>
           <SumPricesDisplay
             totalPrices={totalPricesData}
-          />
-        </Box>
+          </Box>
         </>
       ) : (
         <Loading />
