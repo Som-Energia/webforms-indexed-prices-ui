@@ -10,9 +10,6 @@ import { useTranslation } from 'react-i18next'
 import SomDatePicker from '@somenergia/somenergia-ui/SomDatePicker'
 import Box from '@mui/material/Box'
 import dayjs from 'dayjs'
-import { useParams } from 'react-router-dom'
-
-//import i18n from '../../i18n/i18n'
 
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
