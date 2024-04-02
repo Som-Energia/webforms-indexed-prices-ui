@@ -10,6 +10,9 @@ import { useTranslation } from 'react-i18next'
 import SomDatePicker from '@somenergia/somenergia-ui/SomDatePicker'
 import Box from '@mui/material/Box'
 import dayjs from 'dayjs'
+import { useParams } from 'react-router-dom'
+
+//import i18n from '../../i18n/i18n'
 
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
@@ -18,26 +21,6 @@ export default function IndexedDailyPrices() {
   const [prices, setPrices] = useState(null)
   const [calendarDay, setCalendarDay] = useState(dayjs().endOf('day'))
   const { t } = useTranslation()
-
-  useEffect(() => {
-    const getPrices = async (tariffName) => {
-      if (tariffName === 'surplusCompensation') {
-        const data = await getCompensationIndexedPrices({
-          geoZone: 'PENINSULA',
-        })
-        setFirstDate(data.first_date)
-        setPrices(data.curves.compensation_euros_kwh)
-      } else {
-        const data = await getIndexedTariffPrices({
-          tariff: tariffName,
-          geoZone: 'PENINSULA',
-        })
-        setFirstDate(data.first_date)
-        setPrices(data.curves.price_euros_kwh)
-      }
-    }
-    getPrices(tariffName)
-  }, [tariffName])
 
   const totalPrices = React.useMemo(() => {
     if (!firstDate) return false
@@ -70,24 +53,44 @@ export default function IndexedDailyPrices() {
     {
       value: totalPrices['MIN'],
       unit: '€/kWh',
-      description: t('SUMPRICESDISPLAY.TOTAL_MIN')
+      description: t('SUMPRICESDISPLAY.TOTAL_MIN'),
     },
     {
       value: totalPrices['MAX'],
       unit: '€/kWh',
-      description: t('SUMPRICESDISPLAY.TOTAL_MAX')
+      description: t('SUMPRICESDISPLAY.TOTAL_MAX'),
     },
     {
       value: totalPrices['AVERAGE'],
       unit: '€/kWh',
-      description: t('SUMPRICESDISPLAY.TOTAL_AVERAGE')
+      description: t('SUMPRICESDISPLAY.TOTAL_AVERAGE'),
     },
     {
       value: totalPrices['WEEKLY_AVERAGE'],
       unit: '€/kWh',
-      description: t('SUMPRICESDISPLAY.TOTAL_WEEKLY_AVERAGE')
-    }
+      description: t('SUMPRICESDISPLAY.TOTAL_WEEKLY_AVERAGE'),
+    },
   ]
+
+  useEffect(() => {
+    const getPrices = async (tariffName) => {
+      if (tariffName === 'surplusCompensation') {
+        const data = await getCompensationIndexedPrices({
+          geoZone: 'PENINSULA',
+        })
+        setFirstDate(data.first_date)
+        setPrices(data.curves.compensation_euros_kwh)
+      } else {
+        const data = await getIndexedTariffPrices({
+          tariff: tariffName,
+          geoZone: 'PENINSULA',
+        })
+        setFirstDate(data.first_date)
+        setPrices(data.curves.price_euros_kwh)
+      }
+    }
+    getPrices(tariffName)
+  }, [tariffName])
 
   return (
     <>
@@ -99,23 +102,21 @@ export default function IndexedDailyPrices() {
           period="DAILY"
           currentTime={calendarDay}
           setCurrentTime={setCalendarDay}
-          lang={'ca'}
         />
       </Box>
       {indexedTariffPrices ? (
         <>
-        <Chart
-          data={indexedTariffPrices}
-          period="DAILY"
-          type="BAR"
-          Ylegend={'€/kWh'}
-          legend={true}
-          showTooltipKeys={false}
-          referenceLineData={referenceLineData}
-        />
-        <Box>
-          <SumPricesDisplay
-            totalPrices={totalPricesData}
+          <Chart
+            data={indexedTariffPrices}
+            period="DAILY"
+            type="BAR"
+            Ylegend={'€/kWh'}
+            legend={true}
+            showTooltipKeys={false}
+            referenceLineData={referenceLineData}
+          />
+          <Box>
+            <SumPricesDisplay totalPrices={totalPricesData} />
           </Box>
         </>
       ) : (
