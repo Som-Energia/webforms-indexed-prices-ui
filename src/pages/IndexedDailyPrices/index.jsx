@@ -74,6 +74,29 @@ export default function IndexedDailyPrices() {
     }
   ]
 
+  const totalPricesData = [
+    {
+      value: totalPrices['MIN'],
+      unit: '€/kWh',
+      description: t('SUMPRICESDISPLAY.TOTAL_MIN')
+    },
+    {
+      value: totalPrices['MAX'],
+      unit: '€/kWh',
+      description: t('SUMPRICESDISPLAY.TOTAL_MAX')
+    },
+    {
+      value: totalPrices['AVERAGE'],
+      unit: '€/kWh',
+      description: t('SUMPRICESDISPLAY.TOTAL_AVERAGE')
+    },
+    {
+      value: totalPrices['WEEKLY_AVERAGE'],
+      unit: '€/kWh',
+      description: t('SUMPRICESDISPLAY.TOTAL_WEEKLY_AVERAGE')
+    }
+  ]
+
   return (
     <>
       <TariffSelector />
@@ -91,7 +114,7 @@ export default function IndexedDailyPrices() {
         />
         <Box>
           <SumPricesDisplay
-            totalPrices={totalPrices}
+            totalPrices={totalPricesData}
           />
         </Box>
         </>
