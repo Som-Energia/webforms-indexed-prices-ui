@@ -10,16 +10,6 @@ export function getMeasuredData(first_date, selected_day, prices) {
   return timeSlice(first_date, prices, startIndex, endIndex)
 }
 
-export function computeLimitDate(selected_day, first_date) {
-  let limit_date = new Date(selected_day)
-  const inclusive_week = 6
-  limit_date.setDate(selected_day.getDate() - inclusive_week)
-  if (limit_date < first_date) {
-    limit_date = first_date
-  }
-  return limit_date
-}
-
 function wrongParameterValidation(fromDate, selectedDate, prices) {
   const first_date = new Date(fromDate)
   first_date.setHours(0)
@@ -79,9 +69,8 @@ function computeBaseValues(fromDate, selectedDate, prices) {
   first_date.setHours(0)
   const selected_day = new Date(selectedDate)
   selected_day.setHours(0)
-  const limit_date = computeLimitDate(selected_day, first_date)
 
-  const measured_data = getMeasuredData(limit_date, selected_day, prices)
+  const measured_data = getMeasuredData(first_date, selected_day, prices)
 
   let lastWeekPrices = []
   let dayPrices = []
