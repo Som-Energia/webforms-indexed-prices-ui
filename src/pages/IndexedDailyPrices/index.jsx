@@ -7,6 +7,7 @@ import { transformIndexedTariffPrices, computeTotals, dayIsMissing } from '../..
 import TariffSelector from '../../components/TariffSelector'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
 import { useTranslation } from 'react-i18next'
+import { useParams } from 'react-router-dom'
 import SomDatePicker from '@somenergia/somenergia-ui/SomDatePicker'
 import DizzyError from '@somenergia/somenergia-ui/DizzyError'
 import Box from '@mui/material/Box'
@@ -15,11 +16,16 @@ import dayjs from 'dayjs'
 
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
+  const { language } = useParams()
 
   const [firstDate, setFirstDate] = useState(null)
   const [prices, setPrices] = useState(null)
   const [calendarDay, setCalendarDay] = useState(dayjs().endOf('day'))
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
+
+  useEffect(() => {
+    i18n.changeLanguage(language)
+  }, [language])
 
   const totalPrices = React.useMemo(() => {
     if (!firstDate) return false
@@ -37,7 +43,7 @@ export default function IndexedDailyPrices() {
       color: 'blue',
       stroke: '3 3',
       strokeWidth: 2,
-      text: t('CHART.WEEKLY_AVERAGE_LEGEND'),
+      text: t('CHART.WEEKLY_AVERAGE_LEGEND', { base_days_computation: indexedTariffPrices['base_days_computation'] }),
     },
     {
       value: indexedTariffPrices.day_average,
@@ -67,12 +73,15 @@ export default function IndexedDailyPrices() {
     {
       value: totalPrices['WEEKLY_AVERAGE'],
       unit: '€/kWh',
-      description: t('SUMPRICESDISPLAY.TOTAL_WEEKLY_AVERAGE'),
+      description: t('SUMPRICESDISPLAY.TOTAL_WEEKLY_AVERAGE', { base_days_computation: totalPrices['BASE_DAYS_COMPUTATION'] }),
     },
   ]
 
+  const [error, setError] = useState(false)
+
   useEffect(() => {
     const getPrices = async (tariffName) => {
+      setError(false)
       if (tariffName === 'surplusCompensation') {
         const data = await getCompensationIndexedPrices({
           geoZone: 'PENINSULA',
@@ -80,16 +89,32 @@ export default function IndexedDailyPrices() {
         setFirstDate(data.first_date)
         setPrices(data.curves.compensation_euros_kwh)
       } else {
-        const data = await getIndexedTariffPrices({
-          tariff: tariffName,
-          geoZone: 'PENINSULA',
-        })
-        setFirstDate(data.first_date)
-        setPrices(data.curves.price_euros_kwh)
+        try {
+
+          const data = await getIndexedTariffPrices({
+            tariff: tariffName,
+            geoZone: 'PENINSULA',
+          })
+          setFirstDate(data.first_date)
+          setPrices(data.curves.price_euros_kwh)
+
+        } catch (error) {
+          console.error('Error fetching indexed prices', error)
+          setError(true)
+        }
+
       }
     }
     getPrices(tariffName)
   }, [tariffName])
+
+  // ErrorBox component
+  const ErrorBox = ({ message }) => (
+    <Box sx={{ textAlign: 'center' }}>
+      <DizzyError />
+      <Typography>{message}</Typography>
+    </Box>
+  );
 
   return (
     <>
@@ -105,37 +130,32 @@ export default function IndexedDailyPrices() {
       </Box>
 
       {
-        !indexedTariffPrices ? (
-          <Loading />
-        ) : ( indexedTariffPrices && !dayIsMissing(indexedTariffPrices.periods) ? (
-          <>
-            <Chart
-              data={indexedTariffPrices}
-              period="DAILY"
-              type="BAR"
-              Ylegend={'€/kWh'}
-              legend={true}
-              showTooltipKeys={false}
-              referenceLineData={referenceLineData}
-            />
-            <Box>
-              <SumPricesDisplay totalPrices={totalPricesData} />
-            </Box>
-          </>
+        error ? (
+          <ErrorBox message={t('API.ERROR_FETCHING_DATA')} />
         ) : (
-          <>
-            <Box
-            sx={{ textAlign: 'center' }}
-            >
-              <DizzyError />
-              <Typography>
-                {t('PRICES.ERROR_MISSING_DATA')}
-              </Typography>
-            </Box>
-          </>
+          !indexedTariffPrices ? (
+            <Loading />
+          ) : (
+            !dayIsMissing(indexedTariffPrices.periods) ? (
+              <>
+                <Chart
+                  data={indexedTariffPrices}
+                  period="DAILY"
+                  type="BAR"
+                  Ylegend={'€/kWh'}
+                  legend={true}
+                  showTooltipKeys={false}
+                  referenceLineData={referenceLineData}
+                />
+                <SumPricesDisplay totalPrices={totalPricesData} />
+              </>
+            ) : (
+              <ErrorBox message={t('PRICES.ERROR_MISSING_DATA')} />
+            )
+          )
         )
-      )
       }
+
     </>
   )
 }

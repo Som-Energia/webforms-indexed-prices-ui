@@ -43,7 +43,8 @@ export function computeTotals(fromDate, selectedDate, prices) {
     MIN: '0',
     MAX: '0',
     AVERAGE: '0',
-    WEEKLY_AVERAGE: '0'
+    WEEKLY_AVERAGE: '0',
+    BASE_DAYS_COMPUTATION: '0'
   }
 
   if (wrongParameterValidation(fromDate, selectedDate, prices)) {
@@ -54,6 +55,7 @@ export function computeTotals(fromDate, selectedDate, prices) {
 
   if (acum_week > 0) {
     totalPrices['WEEKLY_AVERAGE'] = String((acum_week / lastWeekPrices.length).toFixed(6))
+    totalPrices['BASE_DAYS_COMPUTATION'] = lastWeekPrices.length / 24
   }
   if (acum_day > 0) {
     totalPrices['AVERAGE'] = String((acum_day / dayPrices.length).toFixed(6))
@@ -129,7 +131,8 @@ export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
     keys: ['low', 'average', 'up', 'past_low', 'past_average', 'past_up'],
     periods: periods,
     week_average: week_average,
-    day_average: day_average
+    day_average: day_average,
+    base_days_computation: lastWeekPrices.length / 24
   }
 }
 

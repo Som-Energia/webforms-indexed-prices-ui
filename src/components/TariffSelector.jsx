@@ -1,23 +1,17 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import { useTariffNameContext } from './TariffNameContextProvider'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
 import { Tariffs } from '../data/tariff'
 
 function TariffSelector() {
-  const { t, i18n } = useTranslation()
-  const { language } = useParams()
+  const { t } = useTranslation()
   const { tariffName, setTariffName } = useTariffNameContext()
 
   const handleClick = (tariffName) => {
     setTariffName(tariffName)
   }
-
-  useEffect(() => {
-    i18n.changeLanguage(language)
-  }, [language])
 
   const selectedTariff = tariffName
 
