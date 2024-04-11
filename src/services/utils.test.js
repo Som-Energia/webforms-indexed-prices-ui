@@ -1,6 +1,6 @@
 import React from 'react'
 import { beforeEach, afterEach, describe, expect, test, it } from 'vitest'
-import { computeTotals, getMeasuredData, computeLimitDate, transformIndexedTariffPrices } from './utils'
+import { computeTotals, getMeasuredData, computeLimitDate, transformIndexedTariffPrices, dayIsMissing } from './utils'
 
 describe('getMeasuredData', () => {
   describe('when single day requested', () => {
@@ -133,6 +133,56 @@ describe('transformIndexedTariffPrices', () => {
         expect(Object.keys(result)).toStrictEqual(expected_result_keys)
         expect(result['periods'].length).toBe(24)
       })
+    })
+  })
+})
+
+
+describe('dayIsMissing', () => {
+  describe('when all day hours are not missing', () => {
+    it('returns false', () => {
+      const periodElement = {
+        "date": 1712786400000,
+        "value": 'aValidHourValue',
+        "past_low": 0.028231
+      }
+      const totalDayHours = 24
+      const periods = Array.from({ length: totalDayHours }, (_, index) => periodElement);
+
+      const result = dayIsMissing(periods)
+
+      expect(result).toBe(false)
+    })
+  })
+  describe('when some day hours are missing', () => {
+    it('returns false', () => {
+      const periodElement = {
+        "date": 1712786400000,
+        "value": 'aValidHourValue',
+        "past_low": 0.028231
+      }
+      const totalDayHours = 24
+      const periods = Array.from({ length: totalDayHours }, (_, index) => ({ ...periodElement }));
+      periods[0].value = null
+
+      const result = dayIsMissing(periods)
+
+      expect(result).toBe(false)
+    })
+  })
+  describe('when all day hours are missing', () => {
+    it('returns true', () => {
+      const periodElement = {
+        "date": 1712786400000,
+        "value": null,
+        "past_low": 0.028231
+      }
+      const totalDayHours = 24
+      const periods = Array.from({ length: totalDayHours }, (_, index) => ({ ...periodElement }));
+
+      const result = dayIsMissing(periods)
+
+      expect(result).toBe(true)
     })
   })
 })

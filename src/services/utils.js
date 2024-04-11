@@ -201,3 +201,10 @@ export function timeInterval(scope, current_date) {
   }
   return [start, end]
 }
+
+export function dayIsMissing(periods) {
+  for (const element of periods) {
+    if (element.value !== null) return false
+  }
+  return true
+}

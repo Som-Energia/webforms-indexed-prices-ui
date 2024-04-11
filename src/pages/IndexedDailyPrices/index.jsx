@@ -3,12 +3,14 @@ import Chart from '@somenergia/somenergia-ui/Chart'
 import SumPricesDisplay from '@somenergia/somenergia-ui/SumPricesDisplay'
 import Loading from '@somenergia/somenergia-ui/Loading'
 import { getCompensationIndexedPrices, getIndexedTariffPrices } from '../../services/api'
-import { transformIndexedTariffPrices, computeTotals } from '../../services/utils'
+import { transformIndexedTariffPrices, computeTotals, dayIsMissing } from '../../services/utils'
 import TariffSelector from '../../components/TariffSelector'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
 import { useTranslation } from 'react-i18next'
 import SomDatePicker from '@somenergia/somenergia-ui/SomDatePicker'
+import DizzyError from '@somenergia/somenergia-ui/DizzyError'
 import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
 import dayjs from 'dayjs'
 
 export default function IndexedDailyPrices() {
@@ -101,24 +103,39 @@ export default function IndexedDailyPrices() {
           setCurrentTime={setCalendarDay}
         />
       </Box>
-      {indexedTariffPrices ? (
-        <>
-          <Chart
-            data={indexedTariffPrices}
-            period="DAILY"
-            type="BAR"
-            Ylegend={'€/kWh'}
-            legend={true}
-            showTooltipKeys={false}
-            referenceLineData={referenceLineData}
-          />
-          <Box>
-            <SumPricesDisplay totalPrices={totalPricesData} />
-          </Box>
-        </>
-      ) : (
-        <Loading />
-      )}
+
+      {
+        !indexedTariffPrices ? (
+          <Loading />
+        ) : ( indexedTariffPrices && !dayIsMissing(indexedTariffPrices.periods) ? (
+          <>
+            <Chart
+              data={indexedTariffPrices}
+              period="DAILY"
+              type="BAR"
+              Ylegend={'€/kWh'}
+              legend={true}
+              showTooltipKeys={false}
+              referenceLineData={referenceLineData}
+            />
+            <Box>
+              <SumPricesDisplay totalPrices={totalPricesData} />
+            </Box>
+          </>
+        ) : (
+          <>
+            <Box
+            sx={{ textAlign: 'center' }}
+            >
+              <DizzyError />
+              <Typography>
+                {t('PRICES.ERROR_MISSING_DATA')}
+              </Typography>
+            </Box>
+          </>
+        )
+      )
+      }
     </>
   )
 }
