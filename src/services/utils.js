@@ -1,4 +1,3 @@
-import { dateTimePickerTabsClasses } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 
 const PERIOD = 'WEEKLY'

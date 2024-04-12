@@ -6,13 +6,13 @@ import { getCompensationIndexedPrices, getIndexedTariffPrices } from '../../serv
 import { transformIndexedTariffPrices, computeTotals, dayIsMissing } from '../../services/utils'
 import TariffSelector from '../../components/TariffSelector'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
-import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import SomDatePicker from '@somenergia/somenergia-ui/SomDatePicker'
 import DizzyError from '@somenergia/somenergia-ui/DizzyError'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import dayjs from 'dayjs'
+import i18n from '../../i18n/i18n'
 
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
@@ -21,11 +21,7 @@ export default function IndexedDailyPrices() {
   const [firstDate, setFirstDate] = useState(null)
   const [prices, setPrices] = useState(null)
   const [calendarDay, setCalendarDay] = useState(dayjs().endOf('day'))
-  const { t, i18n } = useTranslation()
-
-  useEffect(() => {
-    i18n.changeLanguage(language)
-  }, [language])
+  const t = i18n.t
 
   const totalPrices = React.useMemo(() => {
     if (!firstDate) return false
@@ -80,6 +76,7 @@ export default function IndexedDailyPrices() {
   const [error, setError] = useState(false)
 
   useEffect(() => {
+    i18n.changeLanguage(language)
     const getPrices = async (tariffName) => {
       setError(false)
       if (tariffName === 'surplusCompensation') {
@@ -99,16 +96,14 @@ export default function IndexedDailyPrices() {
           setPrices(data.curves.price_euros_kwh)
 
         } catch (error) {
-          console.error('Error fetching indexed prices', error)
           setError(true)
         }
 
       }
     }
     getPrices(tariffName)
-  }, [tariffName])
+  }, [tariffName, language])
 
-  // ErrorBox component
   const ErrorBox = ({ message }) => (
     <Box sx={{ textAlign: 'center' }}>
       <DizzyError />

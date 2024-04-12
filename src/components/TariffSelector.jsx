@@ -2,11 +2,11 @@ import React from 'react'
 import Button from '@mui/material/Button'
 import Stack from '@mui/material/Stack'
 import { useTariffNameContext } from './TariffNameContextProvider'
-import { useTranslation } from 'react-i18next'
 import { Tariffs } from '../data/tariff'
+import i18n from '../i18n/i18n'
 
 function TariffSelector() {
-  const { t } = useTranslation()
+  const t = i18n.t
   const { tariffName, setTariffName } = useTariffNameContext()
 
   const handleClick = (tariffName) => {
