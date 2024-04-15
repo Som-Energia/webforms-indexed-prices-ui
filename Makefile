@@ -19,6 +19,8 @@ style:
 	node_modules/.bin/prettier --write . --config .prettierrc.yaml
 	# TODO: apply black
 
+clean:
+	rm -r node_modules package-lock.json
 
 define HELP
     - make ui-deps\t\tInstall frontend environment
