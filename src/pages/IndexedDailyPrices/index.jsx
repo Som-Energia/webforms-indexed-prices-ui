@@ -20,7 +20,7 @@ export default function IndexedDailyPrices() {
 
   const [firstDate, setFirstDate] = useState(null)
   const [prices, setPrices] = useState(null)
-  const [calendarDay, setCalendarDay] = useState(dayjs().endOf('day'))
+  const [calendarDay, setCalendarDay] = useState(dayjs().startOf('day'))
   const t = i18n.t
 
   const totalPrices = React.useMemo(() => {
