@@ -19,4 +19,6 @@ jobs:
           start: npm run dev
 
       - uses: ./.github/actions/action-notify-failures-to-team
+        continue-on-error: true
+        if: failure()
 
