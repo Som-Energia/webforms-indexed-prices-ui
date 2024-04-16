@@ -1,7 +1,7 @@
 import React from 'react'
 import { beforeEach, afterEach, describe, expect, test, it } from 'vitest'
 import { computeTotals, getMeasuredData, computeLimitDate,
-  transformIndexedTariffPrices, dayIsMissing, timeInterval } from './utils'
+  transformIndexedTariffPrices, dayIsMissing, weekTimeInterval } from './utils'
 
 describe('getMeasuredData', () => {
   describe('when single day requested', () => {
@@ -9,8 +9,8 @@ describe('getMeasuredData', () => {
         const a_valid_price = 0.1
         const totalWeekPriceValues = 407
         const prices = Array.from({ length: totalWeekPriceValues }, (_, index) => a_valid_price);
-        const limit_date = new Date('2024-03-20')
-        const selected_day = new Date('2024-03-20')
+        const limit_date = new Date('2024-03-20T00:00:00')
+        const selected_day = new Date('2024-03-20T00:00:00')
 
         const prices_data = getMeasuredData(limit_date, selected_day, prices);
 
@@ -37,9 +37,10 @@ describe('computeTotals', () => {
     describe('when one week prices is requested', () => {
       it('returns computation of the prices', () => {
           const a_valid_price = 0.1
-          const prices = Array.from({ length:  168 }, (_, index) => a_valid_price)
+          const prices = Array.from({ length:  407 }, (_, index) => a_valid_price)
           const expectedtotalPrices = {
             AVERAGE: '0.100000',
+            BASE_DAYS_COMPUTATION: 7,
             MAX: '0.100000',
             MIN: '0.100000',
             WEEKLY_AVERAGE: '0.100000'
@@ -52,7 +53,7 @@ describe('computeTotals', () => {
   describe('validations', () => {
     const expectedEmptyTotalPrices = {
         AVERAGE: '0',
-        "BASE_DAYS_COMPUTATION": "0",
+        BASE_DAYS_COMPUTATION: "0",
         MAX: '0',
         MIN: '0',
         WEEKLY_AVERAGE: '0'    
