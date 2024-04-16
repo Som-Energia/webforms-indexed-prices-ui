@@ -1,29 +1,58 @@
 import React from 'react'
 import { beforeEach, afterEach, describe, expect, test, it } from 'vitest'
-import { computeTotals, getMeasuredData, computeLimitDate,
-  transformIndexedTariffPrices, dayIsMissing, weekTimeInterval } from './utils'
+import { computeTotals, getMeasuredData, transformIndexedTariffPrices, 
+  dayIsMissing, weekTimeInterval } from './utils'
 
 describe('getMeasuredData', () => {
   describe('when single day requested', () => {
     it('returns single day prices', () => {
         const a_valid_price = 0.1
-        const totalWeekPriceValues = 407
-        const prices = Array.from({ length: totalWeekPriceValues }, (_, index) => a_valid_price);
+        const totalPrices = 408
+        const prices = Array.from({ length: totalPrices }, (_, index) => a_valid_price);
         const limit_date = new Date('2024-03-20T00:00:00')
         const selected_day = new Date('2024-03-20T00:00:00')
 
         const prices_data = getMeasuredData(limit_date, selected_day, prices);
 
-        expect(prices_data.length).toBe(24)
+        const totalDayHours = 24
+        expect(prices_data.length).toBe(totalDayHours)
     })
   })
-  describe('when single day requested', () => {
+  describe('when first summer day requested', () => {
+    it('returns first summer day prices', () => {
+        const a_valid_price = 0.1
+        const totalPrices = 408
+        const prices = Array.from({ length: totalPrices }, (_, index) => a_valid_price);
+        const limit_date = new Date('2024-03-31T00:00:00')
+        const selected_day = new Date('2024-03-31T00:00:00')
+
+        const prices_data = getMeasuredData(limit_date, selected_day, prices);
+
+        const totalDayHours = 23
+        expect(prices_data.length).toBe(totalDayHours)
+    })
+  })
+  describe('when first winter day requested', () => {
+    it('returns first winter day prices', () => {
+        const a_valid_price = 0.1
+        const totalPrices = 408
+        const prices = Array.from({ length: totalPrices }, (_, index) => a_valid_price);
+        const limit_date = new Date('2023-10-29T00:00:00')
+        const selected_day = new Date('2023-10-29T00:00:00')
+
+        const prices_data = getMeasuredData(limit_date, selected_day, prices);
+
+        const totalDayHours = 25
+        expect(prices_data.length).toBe(totalDayHours)
+    })
+  })
+  describe('when one week is requested', () => {
     it('returns one week prices', () => {
         const a_valid_price = 0.1
-        const totalWeekPriceValues = 407
-        const prices = Array.from({ length: totalWeekPriceValues }, (_, index) => a_valid_price);
-        const limit_date = new Date('2024-03-06')
-        const selected_day = new Date('2024-03-14')
+        const totalPrices = 408
+        const prices = Array.from({ length: totalPrices }, (_, index) => a_valid_price);
+        const limit_date = new Date('2024-03-06T00:00:00')
+        const selected_day = new Date('2024-03-14T00:00:00')
 
         const prices_data = getMeasuredData(limit_date, selected_day, prices);
 
