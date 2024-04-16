@@ -12,7 +12,7 @@ import DizzyError from '@somenergia/somenergia-ui/DizzyError'
 import Box from '@mui/material/Box'
 import Typography from '@mui/material/Typography'
 import dayjs from 'dayjs'
-import i18n from '../../i18n/i18n'
+import { useTranslation } from 'react-i18next'
 
 export default function IndexedDailyPrices() {
   const { tariffName } = useTariffNameContext()
@@ -21,7 +21,7 @@ export default function IndexedDailyPrices() {
   const [firstDate, setFirstDate] = useState(null)
   const [prices, setPrices] = useState(null)
   const [calendarDay, setCalendarDay] = useState(dayjs().startOf('day'))
-  const t = i18n.t
+  const { t, i18n } = useTranslation()
 
   const totalPrices = React.useMemo(() => {
     if (!firstDate) return false
