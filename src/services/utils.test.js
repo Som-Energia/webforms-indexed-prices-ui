@@ -1,15 +1,16 @@
 import React from 'react'
 import { beforeEach, afterEach, describe, expect, test, it } from 'vitest'
-import { computeTotals, getMeasuredData, computeLimitDate, transformIndexedTariffPrices, dayIsMissing } from './utils'
+import { computeTotals, getMeasuredData, computeLimitDate,
+  transformIndexedTariffPrices, dayIsMissing, timeInterval } from './utils'
 
 describe('getMeasuredData', () => {
   describe('when single day requested', () => {
     it('returns single day prices', () => {
         const a_valid_price = 0.1
-        const totalWeekPriceValues = 360
+        const totalWeekPriceValues = 407
         const prices = Array.from({ length: totalWeekPriceValues }, (_, index) => a_valid_price);
         const limit_date = new Date('2024-03-20')
-        const selected_day = new Date('2024-03-21')
+        const selected_day = new Date('2024-03-20')
 
         const prices_data = getMeasuredData(limit_date, selected_day, prices);
 
@@ -19,50 +20,14 @@ describe('getMeasuredData', () => {
   describe('when single day requested', () => {
     it('returns one week prices', () => {
         const a_valid_price = 0.1
-        const totalWeekPriceValues = 360
+        const totalWeekPriceValues = 407
         const prices = Array.from({ length: totalWeekPriceValues }, (_, index) => a_valid_price);
-        const limit_date = new Date('2024-03-08')
+        const limit_date = new Date('2024-03-06')
         const selected_day = new Date('2024-03-14')
 
         const prices_data = getMeasuredData(limit_date, selected_day, prices);
 
         expect(prices_data.length).toBe(168)
-    })
-  })
-})
-
-describe('computeLimitDate', () => {
-  describe('when limit_date is inside the valid range', () => {
-    it('returns date into range', () => {  
-        const selected_day = new Date('2024-03-27')
-        const first_date = new Date('2024-03-15')
-        const expected_date = new Date('2024-03-21')
-
-        const limit_date = computeLimitDate(selected_day, first_date)
-
-        expect(limit_date).toStrictEqual(expected_date)
-    })
-  })
-  describe('when limit_date is equal to the started range limit', () => {
-    it('returns started range limit value', () => {  
-        const selected_day = new Date('2024-03-27')
-        const first_date = new Date('2024-03-21')
-        const expected_date = new Date('2024-03-21')
-
-        const limit_date = computeLimitDate(selected_day, first_date)
-        
-        expect(limit_date).toStrictEqual(expected_date)
-    })
-  })
-  describe('limit_date is outside of the valid range', () => {
-    it('returns started range limit value', () => {  
-        const selected_day = new Date('2024-03-27');
-        const first_date = new Date('2024-03-25');
-        const expected_date = new Date('2024-03-25')
-
-        const limit_date = computeLimitDate(selected_day, first_date);
-
-        expect(limit_date).toStrictEqual(expected_date)
     })
   })
 })
@@ -87,6 +52,7 @@ describe('computeTotals', () => {
   describe('validations', () => {
     const expectedEmptyTotalPrices = {
         AVERAGE: '0',
+        "BASE_DAYS_COMPUTATION": "0",
         MAX: '0',
         MIN: '0',
         WEEKLY_AVERAGE: '0'    
@@ -129,7 +95,7 @@ describe('transformIndexedTariffPrices', () => {
 
         const result = transformIndexedTariffPrices(fromDate, selectedDate, prices)
 
-        const expected_result_keys = ["fills", "keys", "periods", "referenceLineData"]
+        const expected_result_keys = ["fills", "keys", "periods", "week_average", "day_average", "base_days_computation"]
         expect(Object.keys(result)).toStrictEqual(expected_result_keys)
         expect(result['periods'].length).toBe(24)
       })
@@ -183,6 +149,41 @@ describe('dayIsMissing', () => {
       const result = dayIsMissing(periods)
 
       expect(result).toBe(true)
+    })
+  })
+})
+
+describe('weekTimeInterval', () => {
+  describe('when summer time', () => {
+    it('returns interval in summer time', () => {
+      expect(weekTimeInterval(new Date('2024-04-14T00:00:00'))).toStrictEqual([
+        new Date('2024-04-08T00:00:00'),
+        new Date('2024-04-15T00:00:00'),
+      ])
+    })
+  })
+  describe('when winter time', () => {
+    it('returns interval in winter time', () => {
+      expect(weekTimeInterval(new Date('2024-03-14T00:00:00'))).toStrictEqual([
+        new Date('2024-03-08T00:00:00'),
+        new Date('2024-03-15T00:00:00'),
+      ])
+    })
+  })
+  describe('when winter to summer time', () => {
+    it('returns interval in between winter and summer time', () => {
+      expect(weekTimeInterval(new Date('2024-03-30T00:00:00'))).toStrictEqual([
+        new Date('2024-03-24T00:00:00'),
+        new Date('2024-03-31T00:00:00'),
+      ])
+    })
+  })
+  describe('when summer to winter time', () => {
+    it('returns interval in between summer and winter time', () => {
+      expect(weekTimeInterval(new Date('2023-10-29T00:00:00'))).toStrictEqual([
+        new Date('2023-10-23T00:00:00'),
+        new Date('2023-10-30T00:00:00'),
+      ])
     })
   })
 })
