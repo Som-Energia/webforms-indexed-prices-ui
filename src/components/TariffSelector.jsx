@@ -4,6 +4,7 @@ import Stack from '@mui/material/Stack'
 import { useTariffNameContext } from './TariffNameContextProvider'
 import { Tariffs } from '../data/tariff'
 import { useTranslation } from 'react-i18next'
+import plausible from '../utils/plausible'
 
 function TariffSelector() {
   const { t } = useTranslation()
@@ -11,6 +12,7 @@ function TariffSelector() {
 
   const handleClick = (tariffName) => {
     setTariffName(tariffName)
+    plausible.trackEvent('IndexedTariffSelectorButton-' + tariffName)
   }
 
   const selectedTariff = tariffName
