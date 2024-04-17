@@ -11,6 +11,6 @@ SUMPRICESDISPLAY:
   TOTAL_AVERAGE: PROMEDIO DEL DIA
   TOTAL_WEEKLY_AVERAGE: 'PROMEDIO ULTIMOS {{ base_days_computation }} DÍAS'
 PRICES:
-  ERROR_MISSING_DATA: No hay datos disponibles
+  ERROR_MISSING_DATA: No hay datos disponibles para esta fecha
 API:
   ERROR_FETCHING_DATA: Error obteniendo los datos
