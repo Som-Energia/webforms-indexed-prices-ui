@@ -2,3 +2,15 @@ TARIFF_SELECTOR:
   SURPLUS_COMPENSATION: Compensació d'excedents
   TARIFF_30TD: 3.0TD
   TARIFF_20TD: 2.0TD
+CHART:
+  DAILY_AVERAGE_LEGEND: Mitjana dels 24 preus del dia
+  WEEKLY_AVERAGE_LEGEND: Mitjana dels últims {{ base_days_computation }} dies
+SUMPRICESDISPLAY:
+  TOTAL_MIN: PREU MINIM
+  TOTAL_MAX: PREU MAXIM
+  TOTAL_AVERAGE: MITJANA DEL DIA
+  TOTAL_WEEKLY_AVERAGE: MITJANA ULTIMS {{ base_days_computation }} DIES
+PRICES:
+  ERROR_MISSING_DATA: No hi han dades disponibles
+API:
+  ERROR_FETCHING_DATA: Error obtenint les dades

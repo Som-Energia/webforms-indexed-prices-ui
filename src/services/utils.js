@@ -1,12 +1,11 @@
 import { dateTimePickerTabsClasses } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 
-const PERIOD = 'WEEKLY'
 // Percentage for color gradient according to the mean price for the last 7 days
 const PERCENTAGE_MEAN = 10 / 100 // 10%
 
 export function getMeasuredData(first_date, selected_day, prices) {
-  const [startIndex, endIndex] = sliceIndexes(first_date, PERIOD, dayjs(selected_day))
+  const [startIndex, endIndex] = sliceIndexes(first_date, dayjs(selected_day))
   return timeSlice(first_date, prices, startIndex, endIndex)
 }
 
@@ -53,17 +52,20 @@ export function computeTotals(fromDate, selectedDate, prices) {
     MIN: '0',
     MAX: '0',
     AVERAGE: '0',
-    WEEKLY_AVERAGE: '0'
+    WEEKLY_AVERAGE: '0',
+    BASE_DAYS_COMPUTATION: '0'
   }
 
   if (wrongParameterValidation(fromDate, selectedDate, prices)) {
     return totalPrices
   }
 
-  let { acum_week, lastWeekPrices, acum_day, dayPrices } = computeBaseValues(fromDate, selectedDate, prices)
+  let { acum_week, acum_day, dayPrices, baseDaysComputation } =
+    computeBaseValues(fromDate, selectedDate, prices)
 
   if (acum_week > 0) {
-    totalPrices['WEEKLY_AVERAGE'] = String((acum_week / lastWeekPrices.length).toFixed(6))
+    totalPrices['WEEKLY_AVERAGE'] = String((acum_week / baseDaysComputation).toFixed(6))
+    totalPrices['BASE_DAYS_COMPUTATION'] = baseDaysComputation / 24
   }
   if (acum_day > 0) {
     totalPrices['AVERAGE'] = String((acum_day / dayPrices.length).toFixed(6))
@@ -79,19 +81,22 @@ function computeBaseValues(fromDate, selectedDate, prices) {
   first_date.setHours(0)
   const selected_day = new Date(selectedDate)
   selected_day.setHours(0)
-  const limit_date = computeLimitDate(selected_day, first_date)
 
-  const measured_data = getMeasuredData(limit_date, selected_day, prices)
+  const measured_data = getMeasuredData(first_date, selected_day, prices)
 
   let lastWeekPrices = []
   let dayPrices = []
+  let baseDaysComputation = 0
 
   measured_data.forEach((data) => {
     const current_date = new Date(data.date)
     current_date.setHours(0)
     const current_date_day = current_date.getDate()
 
-    lastWeekPrices.push(data)
+    if (data.value !== null) {
+      lastWeekPrices.push(data)
+      baseDaysComputation += 1
+    }
     if (current_date_day == selected_day.getDate())
       dayPrices.push(data)
   })
@@ -103,12 +108,13 @@ function computeBaseValues(fromDate, selectedDate, prices) {
     return accumulator + currentValue.value
   }, 0)
 
-  return { acum_week, lastWeekPrices, acum_day, dayPrices }
+  return { acum_week, acum_day, dayPrices, baseDaysComputation }
 }
 
 export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
-  let { acum_week, lastWeekPrices, acum_day, dayPrices } = computeBaseValues(fromDate, selectedDate, prices)
-  let week_average = acum_week / lastWeekPrices.length
+  let { acum_week, acum_day, dayPrices, baseDaysComputation } =
+    computeBaseValues(fromDate, selectedDate, prices)
+  let week_average = acum_week / baseDaysComputation
   let day_average = acum_day / dayPrices.length
   const today = new Date();
   today.setMinutes(0, 0, 0);
@@ -140,7 +146,8 @@ export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
     keys: ['low', 'average', 'up', 'past_low', 'past_average', 'past_up'],
     periods: periods,
     week_average: week_average,
-    day_average: day_average
+    day_average: day_average,
+    base_days_computation: baseDaysComputation / 24
   }
 }
 
@@ -170,45 +177,30 @@ export function timeSlice(timeOffset, values, indexStart, indexEnd) {
   return array2datapoints(newTimeOffset, values.slice(adjustedIndexStart, indexEnd))
 }
 
-export function sliceIndexes(offsetDate, period, currentTime) {
-  var [startTime, endTime] = timeInterval(period, currentTime)
+export function sliceIndexes(offsetDate, currentTime) {
+  var [startTime, endTime] = weekTimeInterval(currentTime)
   var startIndex = time2index(offsetDate, startTime)
   var endIndex = time2index(offsetDate, endTime)
   return [startIndex, endIndex]
 }
 
-export function timeInterval(scope, current_date) {
-  const start = new Date(current_date)
-  start.setHours(0)
-  start.setMinutes(0)
-  start.setSeconds(0)
-  start.setMilliseconds(0)
-  if (scope === 'MONTHLY') {
-    start.setDate(1)
-  }
-  if (scope === 'YEARLY') {
-    start.setDate(1) // Month days are 1 based
-    start.setMonth(0) // Month are 0 based
-  }
-  if (scope === 'WEEKLY') {
-    var weekday_shift = (start.getDay() + 6) % 7
-    start.setDate(start.getDate() - weekday_shift)
-  }
+export function weekTimeInterval(currentTime) {
+  const end = new Date(currentTime)
+  end.setHours(0)
+  end.setMinutes(0)
+  end.setSeconds(0)
+  end.setMilliseconds(0)
+  end.setDate(end.getDate() + 1)
 
-  const end = new Date(start)
-  switch (scope) {
-    case 'DAILY':
-      end.setDate(end.getDate() + 1)
-      break
-    case 'MONTHLY':
-      end.setMonth(end.getMonth() + 1)
-      break
-    case 'YEARLY':
-      end.setFullYear(end.getFullYear() + 1)
-      break
-    case 'WEEKLY':
-      end.setDate(end.getDate() + 7)
-      break
-  }
+  const start = new Date(end)
+  start.setDate(start.getDate() - 7)
+
   return [start, end]
+}
+
+export function dayIsMissing(periods) {
+  for (const element of periods) {
+    if (element.value !== null) return false
+  }
+  return true
 }

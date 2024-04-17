@@ -13,8 +13,15 @@ export const getIndexedTariffPrices = async ({ tariff, geoZone }) => {
       tariff: tariff,
       geo_zone: geoZone,
     },
-  }).then((response) => {
-    // TODO: catch errors
+  })
+  .catch((error) => {
+      throw error
+    }
+  )
+  .then((response) => {
+    if (response.error !== undefined) {
+      throw response
+    }
     return response?.data?.data
   })
 }
@@ -27,8 +34,15 @@ export const getCompensationIndexedPrices = async ({ geoZone }) => {
     params: {
       geo_zone: geoZone,
     },
-  }).then((response) => {
-    // TODO: catch errors
+  })
+  .catch((error) => {
+      throw error
+    }
+  )
+  .then((response) => {
+    if (response.error !== undefined) {
+      throw response
+    }
     return response?.data?.data
   })
 }
