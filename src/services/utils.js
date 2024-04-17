@@ -1,4 +1,3 @@
-import { dateTimePickerTabsClasses } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 
 const PERIOD = 'WEEKLY'
@@ -10,22 +9,7 @@ export function getMeasuredData(first_date, selected_day, prices) {
   return timeSlice(first_date, prices, startIndex, endIndex)
 }
 
-export function computeLimitDate(selected_day, first_date) {
-  let limit_date = new Date(selected_day)
-  const inclusive_week = 6
-  limit_date.setDate(selected_day.getDate() - inclusive_week)
-  if (limit_date < first_date) {
-    limit_date = first_date
-  }
-  return limit_date
-}
-
 function wrongParameterValidation(fromDate, selectedDate, prices) {
-  const first_date = new Date(fromDate)
-  first_date.setHours(0)
-  const selected_day = new Date(selectedDate)
-  selected_day.setHours(0)
-
   if (fromDate === '' || selectedDate === '') {
     return true
   }
@@ -34,7 +18,7 @@ function wrongParameterValidation(fromDate, selectedDate, prices) {
     return true
   }
 
-  if (first_date > selected_day) {
+  if (fromDate > selectedDate) {
     return true
   }
 
@@ -49,51 +33,57 @@ function wrongParameterValidation(fromDate, selectedDate, prices) {
  * @returns {Object} - The computed total.
  */
 export function computeTotals(fromDate, selectedDate, prices) {
+  const first_date = new Date(fromDate)
+  first_date.setHours(0, 0, 0, 0)
+  const selected_day = new Date(selectedDate)
+  selected_day.setHours(0, 0, 0, 0)
+
   let totalPrices = {
     MIN: '0',
     MAX: '0',
     AVERAGE: '0',
-    WEEKLY_AVERAGE: '0'
+    WEEKLY_AVERAGE: '0',
   }
 
-  if (wrongParameterValidation(fromDate, selectedDate, prices)) {
+  if (wrongParameterValidation(first_date, selected_day, prices)) {
     return totalPrices
   }
 
-  let { acum_week, lastWeekPrices, acum_day, dayPrices } = computeBaseValues(fromDate, selectedDate, prices)
+  let { acum_week, lastWeekPrices, acum_day, dayPrices } = computeBaseValues(
+    first_date,
+    selected_day,
+    prices,
+  )
 
   if (acum_week > 0) {
     totalPrices['WEEKLY_AVERAGE'] = String((acum_week / lastWeekPrices.length).toFixed(6))
   }
   if (acum_day > 0) {
     totalPrices['AVERAGE'] = String((acum_day / dayPrices.length).toFixed(6))
-    totalPrices['MAX'] = String((Math.max(...dayPrices.map(item => item.value))).toFixed(6))
-    totalPrices['MIN'] = String((Math.min(...dayPrices.map(item => item.value))).toFixed(6))
+    totalPrices['MAX'] = String(
+      Math.max(...dayPrices.map((item) => item.value)).toFixed(6),
+    )
+    totalPrices['MIN'] = String(
+      Math.min(...dayPrices.map((item) => item.value)).toFixed(6),
+    )
   }
 
   return totalPrices
 }
 
 function computeBaseValues(fromDate, selectedDate, prices) {
-  const first_date = new Date(fromDate)
-  first_date.setHours(0)
-  const selected_day = new Date(selectedDate)
-  selected_day.setHours(0)
-  const limit_date = computeLimitDate(selected_day, first_date)
-
-  const measured_data = getMeasuredData(limit_date, selected_day, prices)
+  const measured_data = getMeasuredData(fromDate, selectedDate, prices)
 
   let lastWeekPrices = []
   let dayPrices = []
 
   measured_data.forEach((data) => {
     const current_date = new Date(data.date)
-    current_date.setHours(0)
+    current_date.setHours(0, 0, 0, 0)
     const current_date_day = current_date.getDate()
 
     lastWeekPrices.push(data)
-    if (current_date_day == selected_day.getDate())
-      dayPrices.push(data)
+    if (current_date_day == selectedDate.getDate()) dayPrices.push(data)
   })
 
   let acum_week = lastWeekPrices.reduce((accumulator, currentValue) => {
@@ -107,11 +97,20 @@ function computeBaseValues(fromDate, selectedDate, prices) {
 }
 
 export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
-  let { acum_week, lastWeekPrices, acum_day, dayPrices } = computeBaseValues(fromDate, selectedDate, prices)
+  const first_date = new Date(fromDate)
+  first_date.setHours(0, 0, 0, 0)
+  const selected_day = new Date(selectedDate)
+  selected_day.setHours(0, 0, 0, 0)
+  let { acum_week, lastWeekPrices, acum_day, dayPrices } = computeBaseValues(
+    first_date,
+    selected_day,
+    prices,
+  )
+
   let week_average = acum_week / lastWeekPrices.length
   let day_average = acum_day / dayPrices.length
-  const today = new Date();
-  today.setMinutes(0, 0, 0);
+  const today = new Date()
+  today.setMinutes(0, 0, 0)
 
   // build the periods array of dicts
   let periods = []
@@ -140,7 +139,7 @@ export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
     keys: ['low', 'average', 'up', 'past_low', 'past_average', 'past_up'],
     periods: periods,
     week_average: week_average,
-    day_average: day_average
+    day_average: day_average,
   }
 }
 
