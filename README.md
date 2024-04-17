@@ -23,6 +23,8 @@ make ui-dev  # to start the project in development mode
 ## Configuration
 
 It is necesary to have a `.env` file with these vars configured:
-```
+```bash
 VITE_APP_API_BASE_URL='base url to your api'
+VITE_APP_PLAUSIBLE_TRACK_DOMAIN='plausible track domain'
+VITE_APP_PLAUSIBLE_APIHOST_URL='plausible api host url'
 ```
