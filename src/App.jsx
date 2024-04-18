@@ -22,6 +22,22 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/ca/tarifes-delectricitat-que-oferim/tarifa-indexada/preu-avui/',
+    element: (
+      <TariffNameContextProvider>
+        <IndexedDailyPrices />
+      </TariffNameContextProvider>
+    ),
+  },
+  {
+    path: '/es/tarifas-de-electricidad-que-ofrecemos/tarifa-indexada/precio-hoy/',
+    element: (
+      <TariffNameContextProvider>
+        <IndexedDailyPrices />
+      </TariffNameContextProvider>
+    ),
+  },
+  {
     path: '/:language/indexed-historic-prices',
     element: <IndexedHistoricPrices />,
   },
