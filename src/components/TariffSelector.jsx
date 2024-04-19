@@ -27,7 +27,7 @@ function TariffSelector() {
         <Button
           variant="contained"
           key={tariffKey}
-          data-cy={"button-"+tariffName}
+          data-cy={'button-' + tariffName}
           color={selectedTariff === tariffName ? 'primary' : 'secondary'}
           sx={{
             '@media (min-width: 600px)': {

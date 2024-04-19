@@ -1,11 +1,10 @@
 import React, { createContext, useState, useContext } from 'react'
-import {DefaultTariff} from '../data/tariff'
+import { DefaultTariff } from '../data/tariff'
 
 const TariffNameContext = createContext()
 
 export const TariffNameContextProvider = ({ children }) => {
-
-  const [tariffName, setTariffName] = useState(DefaultTariff);
+  const [tariffName, setTariffName] = useState(DefaultTariff)
 
   return (
     <TariffNameContext.Provider value={{ tariffName, setTariffName }}>
@@ -14,4 +13,4 @@ export const TariffNameContextProvider = ({ children }) => {
   )
 }
 
-export const useTariffNameContext = () => useContext(TariffNameContext);
+export const useTariffNameContext = () => useContext(TariffNameContext)

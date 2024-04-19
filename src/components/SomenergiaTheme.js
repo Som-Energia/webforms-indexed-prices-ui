@@ -3,14 +3,14 @@ import { createTheme } from '@mui/material'
 const SomenergiaTheme = createTheme({
   palette: {
     text: {
-        primary: '#4d4d4d',
-      },
+      primary: '#4d4d4d',
+    },
     primary: {
       main: '#BAC92A',
     },
-    secondary:{
-      main: '#666666'
-    }
+    secondary: {
+      main: '#666666',
+    },
   },
   components: {
     MuiButton: {
