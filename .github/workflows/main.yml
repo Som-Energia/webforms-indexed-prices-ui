@@ -8,6 +8,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set environment variables
+        run: |
+          echo "VITE_APP_API_BASE_URL=${{ secrets.VITE_APP_API_BASE_URL }}" >> $GITHUB_ENV && \
+          echo "VITE_APP_PLAUSIBLE_TRACK_DOMAIN=localhost" >> $GITHUB_ENV && \
+          echo "VITE_APP_PLAUSIBLE_APIHOST_URL=${{ secrets.VITE_APP_PLAUSIBLE_APIHOST_URL }}" >> $GITHUB_ENV
       # Install npm dependencies, cache them correctly
       # and run all Cypress tests
       - name: Install JS dependencies
@@ -21,4 +26,3 @@ jobs:
       - uses: ./.github/actions/action-notify-failures-to-team
         continue-on-error: true
         if: failure()
-
