@@ -1,4 +1,3 @@
-import { dateTimePickerTabsClasses } from '@mui/x-date-pickers'
 import dayjs from 'dayjs'
 
 // Percentage for color gradient according to the mean price for the last 7 days
