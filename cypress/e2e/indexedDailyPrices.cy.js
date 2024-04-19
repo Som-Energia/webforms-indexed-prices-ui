@@ -86,7 +86,7 @@ describe('Indexed daily prices spec', () => {
   })
   it('goes to next day when clicking on next button and updates minimum price for 20TD', () => {
     cy.wait('@mockedIndexed20TD')
-    cy.get('.MuiStack-root').contains(35.9)
+    cy.get('.MuiStack-root').contains(36)
     cy.get('[data-testid="ArrowForwardIosOutlinedIcon"]').click()
     cy.get('input.MuiInputBase-input').should('have.value', tomorrow)
     cy.get('.recharts-layer').should('be.visible')
@@ -95,7 +95,7 @@ describe('Indexed daily prices spec', () => {
   it('goes to previous day when clicking on next button and updates minimum price for 30TD', () => {
     cy.get('[data-cy="button-3.0TD"]').click()
     cy.wait('@mockedIndexed30TD')
-    cy.get('.MuiStack-root').contains(71.8)
+    cy.get('.MuiStack-root').contains(72)
     cy.get('[data-testid="ArrowBackIosOutlinedIcon"]').click()
     cy.get('input.MuiInputBase-input').should('have.value', yesterday)
     cy.get('.recharts-layer').should('be.visible')
