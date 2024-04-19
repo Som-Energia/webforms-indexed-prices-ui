@@ -8,25 +8,31 @@ export function getMeasuredData(first_date, selected_day, prices) {
   return timeSlice(first_date, prices, startIndex, endIndex)
 }
 
-function wrongParameterValidation(fromDate, selectedDate, prices) {
-  const first_date = new Date(fromDate)
-  first_date.setHours(0)
-  const selected_day = new Date(selectedDate)
-  selected_day.setHours(0)
+/**
+ * Validates parameters for incorrect values or conditions.
+ * @param {Date} fromDate - The start date.
+ * @param {Date} selectedDate - The selected date.
+ * @param {Array} prices - The array of prices.
+ * @returns {boolean} - Indicates whether parameters are valid or not.
+ */
+function validateParameters(fromDate, selectedDate, prices) {
+  // Convert fromDate and selectedDate to Date objects and set hours to 0
+  const startDate = new Date(fromDate);
+  startDate.setHours(0);
+  const selectedDay = new Date(selectedDate);
+  selectedDay.setHours(0);
 
-  if (fromDate === '' || selectedDate === '') {
-    return true
+  // Check for empty dates or empty prices array
+  if (fromDate === '' || selectedDate === '' || prices.length === 0) {
+    return true; // Parameters are invalid
   }
 
-  if (prices.length === 0) {
-    return true
+  // Check if the startDate is after the selectedDay
+  if (startDate > selectedDay) {
+    return true; // Parameters are invalid
   }
 
-  if (first_date > selected_day) {
-    return true
-  }
-
-  return false
+  return false; // Parameters are valid
 }
 
 /**
@@ -45,7 +51,7 @@ export function computeTotals(fromDate, selectedDate, prices) {
     BASE_DAYS_COMPUTATION: '0',
   }
 
-  if (wrongParameterValidation(fromDate, selectedDate, prices)) {
+  if (validateParameters(fromDate, selectedDate, prices)) {
     return totalPrices
   }
 
