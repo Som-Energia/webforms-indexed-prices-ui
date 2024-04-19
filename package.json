@@ -9,6 +9,7 @@
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "test": "TZ=Europe/Madrid vitest",
+    "test:once": "TZ=Europe/Madrid vitest run",
     "cypress:open": "TZ=Europe/Madrid cypress open",
     "cypress:run": "TZ=Europe/Madrid cypress run"
   },
