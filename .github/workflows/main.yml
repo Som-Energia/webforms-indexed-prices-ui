@@ -16,7 +16,9 @@ jobs:
       # Install npm dependencies, cache them correctly
       # and run all Cypress tests
       - name: Install JS dependencies
-        run: npm install
+        run: |
+          npm cache clean --force
+          npm install
       - name: Run vitest
         run: TZ=Europe/Madrid vitest run
       - name: Cypress run
