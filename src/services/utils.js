@@ -50,18 +50,18 @@ export function computeTotals(fromDate, selectedDate, prices) {
     return totalPrices
   }
 
-  let { acum_week, acum_day, dayPrices, baseDaysComputation } = computeBaseValues(
+  let { acumWeek, acumDay, dayPrices, baseDaysComputation } = computeBaseValues(
     fromDate,
     selectedDate,
     prices,
   )
 
-  if (acum_week > 0) {
-    totalPrices['WEEKLY_AVERAGE'] = String((acum_week / baseDaysComputation).toFixed(6))
+  if (acumWeek > 0) {
+    totalPrices['WEEKLY_AVERAGE'] = String((acumWeek / baseDaysComputation).toFixed(6))
     totalPrices['BASE_DAYS_COMPUTATION'] = baseDaysComputation / 24
   }
-  if (acum_day > 0) {
-    totalPrices['AVERAGE'] = String((acum_day / dayPrices.length).toFixed(6))
+  if (acumDay > 0) {
+    totalPrices['AVERAGE'] = String((acumDay / dayPrices.length).toFixed(6))
     totalPrices['MAX'] = String(
       Math.max(...dayPrices.map((item) => item.value)).toFixed(6),
     )
@@ -73,48 +73,57 @@ export function computeTotals(fromDate, selectedDate, prices) {
   return totalPrices
 }
 
+/**
+ * Computes base values for a given time period.
+ * @param {Date} fromDate - The start date of the time period.
+ * @param {Date} selectedDate - The selected date.
+ * @param {Array} prices - The array of prices.
+ * @returns {Object} - Object containing base values.
+ */
 function computeBaseValues(fromDate, selectedDate, prices) {
-  const first_date = new Date(fromDate)
-  first_date.setHours(0)
-  const selected_day = new Date(selectedDate)
-  selected_day.setHours(0)
+  const firstDate = new Date(fromDate)
+  firstDate.setHours(0)
+  const selectedDay = new Date(selectedDate)
+  selectedDay.setHours(0)
 
-  const periodPrices = getPricesForPeriod(first_date, selected_day, prices)
+  const periodPrices = getPricesForPeriod(firstDate, selectedDay, prices)
 
   let lastWeekPrices = []
   let dayPrices = []
   let baseDaysComputation = 0
 
   periodPrices.forEach((data) => {
-    const current_date = new Date(data.date)
-    current_date.setHours(0)
-    const current_date_day = current_date.getDate()
+    const currentDate = new Date(data.date)
+    currentDate.setHours(0)
+    const currentDateDay = currentDate.getDate()
 
     if (data.value !== null) {
       lastWeekPrices.push(data)
       baseDaysComputation += 1
     }
-    if (current_date_day == selected_day.getDate()) dayPrices.push(data)
+    if (currentDateDay == selectedDay.getDate()) {
+       dayPrices.push(data)
+    }
   })
 
-  let acum_week = lastWeekPrices.reduce((accumulator, currentValue) => {
+  let acumWeek = lastWeekPrices.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.value
   }, 0)
-  let acum_day = dayPrices.reduce((accumulator, currentValue) => {
+  let acumDay = dayPrices.reduce((accumulator, currentValue) => {
     return accumulator + currentValue.value
   }, 0)
 
-  return { acum_week, acum_day, dayPrices, baseDaysComputation }
+  return { acumWeek, acumDay, dayPrices, baseDaysComputation }
 }
 
 export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
-  let { acum_week, acum_day, dayPrices, baseDaysComputation } = computeBaseValues(
+  let { acumWeek, acumDay, dayPrices, baseDaysComputation } = computeBaseValues(
     fromDate,
     selectedDate,
     prices,
   )
-  let week_average = acum_week / baseDaysComputation
-  let day_average = acum_day / dayPrices.length
+  let week_average = acumWeek / baseDaysComputation
+  let day_average = acumDay / dayPrices.length
   const today = new Date()
   today.setMinutes(0, 0, 0)
 
