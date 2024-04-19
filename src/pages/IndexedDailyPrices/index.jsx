@@ -144,7 +144,9 @@ export default function IndexedDailyPrices() {
             showTooltipKeys={false}
             referenceLineData={referenceLineData}
           />
-          <SumPricesDisplay totalPrices={totalPricesData} />
+          <Box sx={{ marginTop: '40px' }}>
+            <SumPricesDisplay totalPrices={totalPricesData} />
+          </Box>
         </>
       ) : (
         <ErrorBox message={t('PRICES.ERROR_MISSING_DATA')} />
