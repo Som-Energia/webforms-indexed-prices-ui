@@ -12,22 +12,22 @@ const PERCENTAGE_MEAN = 10 / 100 // 10%
  */
 function validateParameters(fromDate, selectedDate, prices) {
   // Convert fromDate and selectedDate to Date objects and set hours to 0
-  const startDate = new Date(fromDate);
-  startDate.setHours(0);
-  const selectedDay = new Date(selectedDate);
-  selectedDay.setHours(0);
+  const startDate = new Date(fromDate)
+  startDate.setHours(0)
+  const selectedDay = new Date(selectedDate)
+  selectedDay.setHours(0)
 
   // Check for empty dates or empty prices array
   if (fromDate === '' || selectedDate === '' || prices.length === 0) {
-    return true; // Parameters are invalid
+    return true // Parameters are invalid
   }
 
   // Check if the startDate is after the selectedDay
   if (startDate > selectedDay) {
-    return true; // Parameters are invalid
+    return true // Parameters are invalid
   }
 
-  return false; // Parameters are valid
+  return false // Parameters are valid
 }
 
 /**
@@ -102,7 +102,7 @@ function computeBaseValues(fromDate, selectedDate, prices) {
       baseDaysComputation += 1
     }
     if (currentDateDay == selectedDay.getDate()) {
-       dayPrices.push(data)
+      dayPrices.push(data)
     }
   })
 
@@ -168,10 +168,10 @@ export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
  */
 export function getPricesForPeriod(firstDate, selectedDay, prices) {
   // Calculate the start and end indexes based on the firstDate and the selectedDay
-  const [startIndex, endIndex] = getSliceIndexes(firstDate, dayjs(selectedDay));
+  const [startIndex, endIndex] = getSliceIndexes(firstDate, dayjs(selectedDay))
 
   // Extract the data within the specified time range
-  return sliceTimeRange(firstDate, prices, startIndex, endIndex);
+  return sliceTimeRange(firstDate, prices, startIndex, endIndex)
 }
 
 export function time2index(referenceTimestamp, timestamp) {
