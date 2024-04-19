@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import {
   computeTotals,
-  getMeasuredData,
+  getPricesForPeriod,
   transformIndexedTariffPrices,
   dayIsMissing,
   weekTimeInterval,
 } from './utils'
 
-describe('getMeasuredData', () => {
+describe('getPricesForPeriod', () => {
   describe('when single day requested', () => {
     it('returns single day prices', () => {
       const a_valid_price = 0.1
@@ -16,7 +16,7 @@ describe('getMeasuredData', () => {
       const limit_date = new Date('2024-03-20T00:00:00')
       const selected_day = new Date('2024-03-20T00:00:00')
 
-      const prices_data = getMeasuredData(limit_date, selected_day, prices)
+      const prices_data = getPricesForPeriod(limit_date, selected_day, prices)
 
       const totalDayHours = 24
       expect(prices_data.length).toBe(totalDayHours)
@@ -30,7 +30,7 @@ describe('getMeasuredData', () => {
       const limit_date = new Date('2024-03-31T00:00:00')
       const selected_day = new Date('2024-03-31T00:00:00')
 
-      const prices_data = getMeasuredData(limit_date, selected_day, prices)
+      const prices_data = getPricesForPeriod(limit_date, selected_day, prices)
 
       const totalDayHours = 23
       expect(prices_data.length).toBe(totalDayHours)
@@ -44,7 +44,7 @@ describe('getMeasuredData', () => {
       const limit_date = new Date('2023-10-29T00:00:00')
       const selected_day = new Date('2023-10-29T00:00:00')
 
-      const prices_data = getMeasuredData(limit_date, selected_day, prices)
+      const prices_data = getPricesForPeriod(limit_date, selected_day, prices)
 
       const totalDayHours = 25
       expect(prices_data.length).toBe(totalDayHours)
@@ -58,7 +58,7 @@ describe('getMeasuredData', () => {
       const limit_date = new Date('2024-03-06T00:00:00')
       const selected_day = new Date('2024-03-14T00:00:00')
 
-      const prices_data = getMeasuredData(limit_date, selected_day, prices)
+      const prices_data = getPricesForPeriod(limit_date, selected_day, prices)
 
       expect(prices_data.length).toBe(168)
     })
