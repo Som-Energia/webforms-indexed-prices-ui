@@ -3,11 +3,6 @@ import dayjs from 'dayjs'
 // Percentage for color gradient according to the mean price for the last 7 days
 const PERCENTAGE_MEAN = 10 / 100 // 10%
 
-export function getMeasuredData(first_date, selected_day, prices) {
-  const [startIndex, endIndex] = sliceIndexes(first_date, dayjs(selected_day))
-  return timeSlice(first_date, prices, startIndex, endIndex)
-}
-
 /**
  * Validates parameters for incorrect values or conditions.
  * @param {Date} fromDate - The start date.
@@ -84,13 +79,13 @@ function computeBaseValues(fromDate, selectedDate, prices) {
   const selected_day = new Date(selectedDate)
   selected_day.setHours(0)
 
-  const measured_data = getMeasuredData(first_date, selected_day, prices)
+  const periodPrices = getPricesForPeriod(first_date, selected_day, prices)
 
   let lastWeekPrices = []
   let dayPrices = []
   let baseDaysComputation = 0
 
-  measured_data.forEach((data) => {
+  periodPrices.forEach((data) => {
     const current_date = new Date(data.date)
     current_date.setHours(0)
     const current_date_day = current_date.getDate()
@@ -155,8 +150,21 @@ export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
   }
 }
 
-// FROM SOM REPRESENTA
-// TODO: move this to somenergia-ui
+/**
+ * Retrieves the data within a specified time range.
+ * @param {Date} firstDate - The start date of the time range.
+ * @param {Date} selectedDay - The selected day, the end of the time range.
+ * @param {Array} prices - The array of prices.
+ * @returns {Array} - The data within the specified time range.
+ */
+export function getPricesForPeriod(firstDate, selectedDay, prices) {
+  // Calculate the start and end indexes based on the firstDate and the selectedDay
+  const [startIndex, endIndex] = getSliceIndexes(firstDate, dayjs(selectedDay));
+
+  // Extract the data within the specified time range
+  return sliceTimeRange(firstDate, prices, startIndex, endIndex);
+}
+
 export function time2index(referenceTimestamp, timestamp) {
   return (new Date(timestamp) - new Date(referenceTimestamp)) / 60 / 60 / 1000
 }
@@ -175,13 +183,13 @@ export function array2datapoints(first_timestamp, values, step_ms = 60 * 60 * 10
   })
 }
 
-export function timeSlice(timeOffset, values, indexStart, indexEnd) {
+export function sliceTimeRange(timeOffset, values, indexStart, indexEnd) {
   var adjustedIndexStart = Math.max(0, indexStart)
   const newTimeOffset = index2time(timeOffset, adjustedIndexStart)
   return array2datapoints(newTimeOffset, values.slice(adjustedIndexStart, indexEnd))
 }
 
-export function sliceIndexes(offsetDate, currentTime) {
+export function getSliceIndexes(offsetDate, currentTime) {
   var [startTime, endTime] = weekTimeInterval(currentTime)
   var startIndex = time2index(offsetDate, startTime)
   var endIndex = time2index(offsetDate, endTime)
