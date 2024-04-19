@@ -17,6 +17,8 @@ jobs:
       # and run all Cypress tests
       - name: Install JS dependencies
         run: npm install
+      - name: Run vitest
+        run: TZ=Europe/Madrid vitest run
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
