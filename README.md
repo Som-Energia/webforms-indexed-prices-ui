@@ -1,30 +1,49 @@
-# React + Vite
+# Webforms Indexed Prices UI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React integration to display indexed prices in Somenergia's website.
 
-Currently, two official plugins are available:
+[React Wordpress integration](https://github.com/Som-Energia/react-wordpress/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Development
 
-## Setup
+### Setup
 
-You can run the project with:
-```bash
-npm install  # to install the project dependecies
-npm run dev  # to start the project in development mode
-```
-or
-```bash
-make ui-deps # to install the project dependencies
-make ui-dev  # to start the project in development mode
-```
+It is necesary to have a `.env` file with these variables configured.
 
-## Configuration
-
-It is necesary to have a `.env` file with these vars configured:
 ```bash
 VITE_APP_API_BASE_URL='base url to your api'
 VITE_APP_PLAUSIBLE_TRACK_DOMAIN='plausible track domain'
 VITE_APP_PLAUSIBLE_APIHOST_URL='plausible api host url'
 ```
+
+```bash
+make ui-deps # to install the project dependencies
+make ui-dev  # to start the project in development mode
+```
+
+### Tests
+
+```bash
+make ui-test # to run the tests
+make ui-test-cypress-run # to run the cypress tests
+make ui-test-cypress-open # open cypress browser interface
+```
+
+### Distribution build
+
+To check a distribution build of the project in your local development environment you can build the project:
+
+```bash
+make ui-build # to build the project
+```
+
+and run a http local server to serve the project:
+
+```bash
+npm install serve
+serve -s dist/
+```
+
+## Deployment
+
+Use the related script and internal documentation to deploy the project.
