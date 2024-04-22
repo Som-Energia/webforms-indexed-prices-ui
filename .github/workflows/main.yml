@@ -1,4 +1,4 @@
-name: Cypress Tests
+name: Tests
 
 on: push
 
@@ -13,20 +13,17 @@ jobs:
           echo "VITE_APP_API_BASE_URL=${{ secrets.VITE_APP_API_BASE_URL }}" >> $GITHUB_ENV && \
           echo "VITE_APP_PLAUSIBLE_TRACK_DOMAIN=localhost" >> $GITHUB_ENV && \
           echo "VITE_APP_PLAUSIBLE_APIHOST_URL=${{ secrets.VITE_APP_PLAUSIBLE_APIHOST_URL }}" >> $GITHUB_ENV
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
       - name: Install JS dependencies
         run: npm install
       - name: Install vitest
         run: npm install -g vitest
-      - name: Run vitest
+      - name: Run vitest tests
         run: TZ=Europe/Madrid vitest run
-      - name: Cypress run
+      - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
           build: npm run build
           start: npm run dev
-
       - uses: ./.github/actions/action-notify-failures-to-team
         continue-on-error: true
         if: failure()

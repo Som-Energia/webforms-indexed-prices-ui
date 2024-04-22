@@ -3,7 +3,7 @@ description: 'Centralized action to notify failures to team (Currently by Google
 runs:
   using: "composite"
   steps:
-    - name: Google Chat Notificationa
+    - name: Google Chat Notifications
       uses: SimonScholz/google-chat-action@main
       if: failure()
       # this allows the build to succeed even when the notification fails
