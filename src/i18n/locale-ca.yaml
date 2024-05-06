@@ -4,13 +4,13 @@ TARIFF_SELECTOR:
   TARIFF_20TD: 2.0TD
 CHART:
   DAILY_AVERAGE_LEGEND: Mitjana del dia
-  WEEKLY_AVERAGE_LEGEND: Mitjana últims {{ base_days_computation }} dies
+  WEEKLY_AVERAGE_LEGEND: Mitjana dels últims {{ base_days_computation }} dies
 SUMPRICESDISPLAY:
-  TOTAL_MIN: PREU MINIM
-  TOTAL_MAX: PREU MAXIM
+  TOTAL_MIN: PREU MÍNIM
+  TOTAL_MAX: PREU MÀXIM
   TOTAL_AVERAGE: MITJANA DEL DIA
-  TOTAL_WEEKLY_AVERAGE: MITJANA ULTIMS {{ base_days_computation }} DIES
+  TOTAL_WEEKLY_AVERAGE: MITJANA DELS ÚLTIMS {{ base_days_computation }} DIES
 PRICES:
   ERROR_MISSING_DATA: No hi ha dades disponibles per a aquesta data
 API:
-  ERROR_FETCHING_DATA: Error obtenint les dades
+  ERROR_FETCHING_DATA: Error en obtenir les dades
