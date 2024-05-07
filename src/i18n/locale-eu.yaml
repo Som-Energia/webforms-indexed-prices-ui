@@ -2,3 +2,15 @@ TARIFF_SELECTOR:
   SURPLUS_COMPENSATION: Soberakinen konpentsazioa
   TARIFF_30TD: 3.0TD
   TARIFF_20TD: 2.0TD
+CHART:
+  WEEKLY_AVERAGE_LEGEND: Azken {{ base_days_computation }} egunetako batezbestekoa
+  DAILY_AVERAGE_LEGEND: Eguneko batezbestekoa
+SUMPRICESDISPLAY:
+  TOTAL_AVERAGE: EGUNEKO BATEZBESTEKOA
+  TOTAL_MIN: GUTXIENEKO PREZIOA
+  TOTAL_MAX: GEHIENEKO PREZIOA
+  TOTAL_WEEKLY_AVERAGE: AZKEN {{ base_days_computation }} EGUNETAKO BATEZBESTEKOA
+PRICES:
+  ERROR_MISSING_DATA: Ez dago egun honetako daturik
+API:
+  ERROR_FETCHING_DATA: Errore bat gertatu da datuak kalkulatzean
