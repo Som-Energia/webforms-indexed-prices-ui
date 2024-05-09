@@ -1,4 +1,4 @@
 TARIFF_SELECTOR:
   SURPLUS_COMPENSATION: Compensación de excedentes
-  TARIFF_30TD: 3.0TD
-  TARIFF_20TD: 2.0TD
+  TARIFF_30TD: 3.0TD Indexada
+  TARIFF_20TD: 2.0TD Indexada

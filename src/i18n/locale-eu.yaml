@@ -1,7 +1,7 @@
 TARIFF_SELECTOR:
   SURPLUS_COMPENSATION: Soberakinen konpentsazioa
-  TARIFF_30TD: 3.0TD
-  TARIFF_20TD: 2.0TD
+  TARIFF_30TD: 3.0TD Indexada
+  TARIFF_20TD: 2.0TD Indexada
 CHART:
   WEEKLY_AVERAGE_LEGEND: Azken {{ base_days_computation }} egunetako batezbestekoa
   DAILY_AVERAGE_LEGEND: Eguneko batezbestekoa
