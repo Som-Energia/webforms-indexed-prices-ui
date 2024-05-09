@@ -30,7 +30,15 @@ function TariffSelector() {
           data-cy={'button-' + tariffName}
           color={selectedTariff === tariffName ? 'primary' : 'secondary'}
           sx={{
-            '@media (min-width: 600px)': {
+            '@media (max-width:600px)': {
+              maxWidth: '56%',
+              marginLeft: '21% !important',
+              marginBottom: '12px !important',
+              width: 'auto',
+              padding: '0.4em 0em 0.4em 0em',
+              fontSize: '1rem',
+            },
+            '@media (min-width:600px)': {
               width: '150px',
               padding: '0.4em 0em 0.4em 0em',
             },
