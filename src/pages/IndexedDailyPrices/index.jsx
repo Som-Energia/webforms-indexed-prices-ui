@@ -116,6 +116,12 @@ export default function IndexedDailyPrices() {
     </Box>
   )
 
+  const ErrorDataAvailabilityBox = ({ message }) => (
+    <Box sx={{ textAlign: 'center' }}>
+      <Typography>{message}</Typography>
+    </Box>
+  )
+
   return (
     <>
       <TariffSelector />
@@ -158,7 +164,7 @@ export default function IndexedDailyPrices() {
           </Box>
         </>
       ) : (
-        <ErrorBox message={t('PRICES.ERROR_MISSING_DATA')} />
+        <ErrorDataAvailabilityBox message={t('PRICES.ERROR_MISSING_DATA')} />
       )}
     </>
   )
