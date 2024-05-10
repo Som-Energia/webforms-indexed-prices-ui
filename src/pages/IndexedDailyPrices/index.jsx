@@ -119,12 +119,7 @@ export default function IndexedDailyPrices() {
   return (
     <>
       <TariffSelector />
-      <Box
-        margin={8}
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
+      <Box margin={8} display="flex" justifyContent="center" alignItems="center">
         <SomDatePicker
           firstDate={dayjs().subtract(7, 'day').startOf('day')}
           lastDate={dayjs().add(1, 'day').endOf('day')}
@@ -134,11 +129,11 @@ export default function IndexedDailyPrices() {
           styles={{
             datePicker: {
               minWidth: '110px',
-              textAlign: "center",
+              textAlign: 'center',
               input: {
                 textAlign: 'center',
               },
-            }
+            },
           }}
         />
       </Box>
