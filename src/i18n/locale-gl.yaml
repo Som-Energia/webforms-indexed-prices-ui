@@ -2,3 +2,15 @@ TARIFF_SELECTOR:
   SURPLUS_COMPENSATION: Compensación de excedentes
   TARIFF_30TD: 3.0TD Indexada
   TARIFF_20TD: 2.0TD Indexada
+CHART:
+  WEEKLY_AVERAGE_LEGEND: Media dos últimos {{ base_days_computation }} días
+  DAILY_AVERAGE_LEGEND: Media do día
+SUMPRICESDISPLAY:
+  TOTAL_MAX: PREZO MÁXIMO
+  TOTAL_MIN: PREZO MÍNIMO
+  TOTAL_AVERAGE: MEDIA DO DÍA
+  TOTAL_WEEKLY_AVERAGE: MEDIA DOS ÚLTIMOS {{ base_days_computation }} DÍAS
+PRICES:
+  ERROR_MISSING_DATA: Non hai datos dispoñibles para esta data
+API:
+  ERROR_FETCHING_DATA: Erro obtendo os datos
