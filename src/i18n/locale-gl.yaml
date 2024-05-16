@@ -13,4 +13,4 @@ SUMPRICESDISPLAY:
 PRICES:
   ERROR_MISSING_DATA: Non hai datos dispoñibles para esta data
 API:
-  ERROR_FETCHING_DATA: Erro obtendo os datos
+  ERROR_FETCHING_DATA: Erro ao obter os datos
