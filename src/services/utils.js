@@ -57,16 +57,16 @@ export function computeTotals(fromDate, selectedDate, prices) {
   )
 
   if (acumWeek > 0) {
-    totalPrices['WEEKLY_AVERAGE'] = String((acumWeek / baseDaysComputation).toFixed(6))
+    totalPrices['WEEKLY_AVERAGE'] = String((acumWeek / baseDaysComputation).toFixed(6)).replace('.', ',')
     totalPrices['BASE_DAYS_COMPUTATION'] = baseDaysComputation / 24
   }
   if (acumDay > 0) {
-    totalPrices['AVERAGE'] = String((acumDay / dayPrices.length).toFixed(6))
+    totalPrices['AVERAGE'] = String((acumDay / dayPrices.length).toFixed(6)).replace('.', ',')
     totalPrices['MAX'] = String(
-      Math.max(...dayPrices.map((item) => item.value)).toFixed(6),
+      Math.max(...dayPrices.map((item) => item.value)).toFixed(6).replace('.', ','),
     )
     totalPrices['MIN'] = String(
-      Math.min(...dayPrices.map((item) => item.value)).toFixed(6),
+      Math.min(...dayPrices.map((item) => item.value)).toFixed(6).replace('.', ','),
     )
   }
 
