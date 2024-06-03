@@ -132,9 +132,9 @@ export function transformIndexedTariffPrices(fromDate, selectedDate, prices) {
   dayPrices.forEach((data) => {
     const pre = today <= data?.date ? '' : 'past_'
     // choose the "number" we need
-    if (data.value + week_average * PERCENTAGE_MEAN < week_average) {
+    if (data.value + day_average * PERCENTAGE_MEAN < day_average) {
       data[`${pre}low`] = data.value
-    } else if (data.value - week_average * PERCENTAGE_MEAN > week_average) {
+    } else if (data.value - day_average * PERCENTAGE_MEAN > day_average) {
       data[`${pre}up`] = data.value
     } else {
       data[`${pre}average`] = data.value
