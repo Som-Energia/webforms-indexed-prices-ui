@@ -11,6 +11,8 @@ SUMPRICESDISPLAY:
   TOTAL_AVERAGE: MITJANA DEL DIA
   TOTAL_WEEKLY_AVERAGE: MITJANA DELS ÚLTIMS {{ base_days_computation }} DIES
 PRICES:
-  ERROR_MISSING_DATA: No hi ha dades disponibles per a aquesta data
+  ERROR_MISSING_DATA: Lamentablement, a hores d’ara no podem mostrar la previsió de
+    preus, a causa d’una incidència. Esperem que es pugui resoldre de seguida i poder
+    mostrar-los al més aviat possible. Disculpeu les molèsties!
 API:
   ERROR_FETCHING_DATA: Error en obtenir les dades
