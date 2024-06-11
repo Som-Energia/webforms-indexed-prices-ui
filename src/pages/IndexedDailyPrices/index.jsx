@@ -40,7 +40,7 @@ export default function IndexedDailyPrices() {
   const referenceLineData = [
     {
       value: indexedTariffPrices.week_average,
-      color: 'blue',
+      color: '#446BC1',
       stroke: '3 3',
       strokeWidth: 2,
       text: t('CHART.WEEKLY_AVERAGE_LEGEND', {
@@ -49,7 +49,7 @@ export default function IndexedDailyPrices() {
     },
     {
       value: indexedTariffPrices.day_average,
-      color: 'blue',
+      color: '#446BC1',
       stroke: '0',
       strokeWidth: 2,
       text: t('CHART.DAILY_AVERAGE_LEGEND'),
