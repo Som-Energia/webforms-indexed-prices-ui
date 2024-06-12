@@ -11,6 +11,8 @@ SUMPRICESDISPLAY:
   TOTAL_MAX: GEHIENEKO PREZIOA
   TOTAL_WEEKLY_AVERAGE: AZKEN {{ base_days_computation }} EGUNETAKO BATEZBESTEKOA
 PRICES:
-  ERROR_MISSING_DATA: Ez dago egun honetako daturik
+  ERROR_MISSING_DATA: Ez dago egun honetako daturik. Barkatu eragozpenak!
 API:
-  ERROR_FETCHING_DATA: Errore bat gertatu da datuak kalkulatzean
+  ERROR_FETCHING_DATA: Tamalez, intzidentzia bat dela eta, une honetan ezin dugu erakutsi
+    prezio-iragarpena. Espero dugu berehala konpontzea eta iragarpena lehenbailehen
+    erakutsi ahal izatea. Barkatu eragozpenak!
