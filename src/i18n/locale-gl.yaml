@@ -11,6 +11,8 @@ SUMPRICESDISPLAY:
   TOTAL_AVERAGE: MEDIA DO DÍA
   TOTAL_WEEKLY_AVERAGE: MEDIA DOS ÚLTIMOS {{ base_days_computation }} DÍAS
 PRICES:
-  ERROR_MISSING_DATA: Non hai datos dispoñibles para esta data
+  ERROR_MISSING_DATA: Non hai datos dispoñibles para esta data. Desculpa as molestias!
 API:
-  ERROR_FETCHING_DATA: Erro ao obter os datos
+  ERROR_FETCHING_DATA: Lamentablemente, nestes intres non che podemos amosar a previsión
+    de prezos debido a unha incidencia. Agardamos resolvelo axiña e poder amosala
+    o antes posible. Desculpa as molestias!
