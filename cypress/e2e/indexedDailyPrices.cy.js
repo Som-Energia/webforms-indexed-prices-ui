@@ -90,7 +90,7 @@ describe('Indexed daily prices spec', () => {
     cy.get('[data-testid="ArrowForwardIosOutlinedIcon"]').click()
     cy.get('input.MuiInputBase-input').should('have.value', tomorrow)
     cy.get('.recharts-layer').should('be.visible')
-    cy.get('.MuiStack-root').contains(-40.6)
+    cy.get('.MuiStack-root').contains('-40,600000')
   })
   it('goes to previous day when clicking on next button and updates minimum price for 30TD', () => {
     cy.get('[data-cy="button-3.0TD"]').click()
