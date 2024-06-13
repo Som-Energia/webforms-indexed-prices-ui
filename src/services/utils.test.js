@@ -72,11 +72,11 @@ describe('computeTotals', () => {
         const a_valid_price = 0.1
         const prices = Array.from({ length: 407 }, (_, index) => a_valid_price)
         const expectedtotalPrices = {
-          AVERAGE: '0.100000',
+          AVERAGE: '0,100000',
           BASE_DAYS_COMPUTATION: 7,
-          MAX: '0.100000',
-          MIN: '0.100000',
-          WEEKLY_AVERAGE: '0.100000',
+          MAX: '0,100000',
+          MIN: '0,100000',
+          WEEKLY_AVERAGE: '0,100000',
         }
         expect(computeTotals('2024-03-03', '2024-03-10', prices)).toStrictEqual(
           expectedtotalPrices,
