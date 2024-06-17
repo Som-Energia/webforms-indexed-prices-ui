@@ -38,6 +38,22 @@ const router = createBrowserRouter([
     ),
   },
   {
+    path: '/gl/tarifas-electricas-que-ofrecemos/tarifa-indexada/prezo-hoxe/',
+    element: (
+      <TariffNameContextProvider>
+        <IndexedDailyPrices />
+      </TariffNameContextProvider>
+    ),
+  },
+  {
+    path: '/eu/eskaintzen-ditugun-elektrizitate-tarifak/tarifa-indexatua/gaurko-prezioa/',
+    element: (
+      <TariffNameContextProvider>
+        <IndexedDailyPrices />
+      </TariffNameContextProvider>
+    ),
+  },
+  {
     path: '/:language/indexed-historic-prices',
     element: <IndexedHistoricPrices />,
   },
