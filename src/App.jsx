@@ -22,7 +22,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/ca/tarifes-delectricitat-que-oferim/tarifa-indexada/preu-avui/',
+      path: '/:language/tarifes-delectricitat-que-oferim/tarifa-indexada/preu-avui/',
     element: (
       <TariffNameContextProvider>
         <IndexedDailyPrices />
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/es/tarifas-de-electricidad-que-ofrecemos/tarifa-indexada/precio-hoy/',
+      path: '/:language/tarifas-de-electricidad-que-ofrecemos/tarifa-indexada/precio-hoy/',
     element: (
       <TariffNameContextProvider>
         <IndexedDailyPrices />
@@ -38,7 +38,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/gl/tarifas-electricas-que-ofrecemos/tarifa-indexada/prezo-hoxe/',
+      path: '/:language/tarifas-electricas-que-ofrecemos/tarifa-indexada/prezo-hoxe/',
     element: (
       <TariffNameContextProvider>
         <IndexedDailyPrices />
@@ -46,7 +46,7 @@ const router = createBrowserRouter([
     ),
   },
   {
-    path: '/eu/eskaintzen-ditugun-elektrizitate-tarifak/tarifa-indexatua/gaurko-prezioa/',
+      path: '/:language/eskaintzen-ditugun-elektrizitate-tarifak/tarifa-indexatua/gaurko-prezioa/',
     element: (
       <TariffNameContextProvider>
         <IndexedDailyPrices />
