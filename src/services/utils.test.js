@@ -5,6 +5,7 @@ import {
   transformIndexedTariffPrices,
   dayIsMissing,
   weekTimeInterval,
+  computeMaxYAxisValue,
 } from './utils'
 
 describe('getPricesForPeriod', () => {
@@ -237,6 +238,53 @@ describe('weekTimeInterval', () => {
         new Date('2023-10-23T00:00:00'),
         new Date('2023-10-30T00:00:00'),
       ])
+    })
+  })
+})
+
+describe('computeMaxYAxisValue', () => {
+  describe('when weekly average price is lower than daily maximum price', () => {
+    it('returns the default behavior', () => {
+      const weekly_average_price = '2,00'
+      const daily_maximum_price = '4,00'
+      const totalPrices = {
+        WEEKLY_AVERAGE: weekly_average_price,
+        MAX: daily_maximum_price
+      }
+
+      const result = computeMaxYAxisValue(totalPrices)
+
+      expect(result).toStrictEqual('auto')
+    })
+  })
+  describe('when weekly average price is equal to daily maximum price', () => {
+    it('returns the default behavior', () => {
+      const weekly_average_price = '2,00'
+      const daily_maximum_price = '2.00'
+      const totalPrices = {
+        WEEKLY_AVERAGE: weekly_average_price,
+        MAX: daily_maximum_price
+      }
+
+      const result = computeMaxYAxisValue(totalPrices)
+
+      expect(result).toStrictEqual('auto')
+    })
+  })
+  describe('when weekly average price is greater than daily maximum price', () => {
+    it('returns the default behavior', () => {
+      const weekly_average_price = '4,00'
+      const daily_maximum_price = '2,00'
+      const tickCount = 7
+      const totalPrices = {
+        WEEKLY_AVERAGE: weekly_average_price,
+        MAX: daily_maximum_price
+      }
+
+      const result = computeMaxYAxisValue(totalPrices, tickCount)
+
+      const expectedResult = 4.57
+      expect(result).toStrictEqual(expectedResult)
     })
   })
 })

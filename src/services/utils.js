@@ -225,3 +225,12 @@ export function dayIsMissing(periods) {
   }
   return true
 }
+
+export function computeMaxYAxisValue(totalPrices, tickCount = 7) {
+  let maxYAxisValue = 'auto'
+  let weekly_average_price = parseFloat(totalPrices['WEEKLY_AVERAGE'].replace(',','.'))
+  let max_price = parseFloat(totalPrices['MAX'].replace(',','.'))
+  if (weekly_average_price > max_price)
+    maxYAxisValue = parseFloat(parseFloat(weekly_average_price + weekly_average_price / tickCount).toFixed(2))
+  return maxYAxisValue
+}

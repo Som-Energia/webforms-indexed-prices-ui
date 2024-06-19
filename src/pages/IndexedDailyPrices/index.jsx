@@ -7,6 +7,7 @@ import {
   transformIndexedTariffPrices,
   computeTotals,
   dayIsMissing,
+  computeMaxYAxisValue,
 } from '../../services/utils'
 import TariffSelector from '../../components/TariffSelector'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
@@ -80,6 +81,8 @@ export default function IndexedDailyPrices() {
       }),
     },
   ]
+
+  const tickCountValue = 7 // Number of yAxis values
 
   const [error, setError] = useState(false)
 
@@ -158,6 +161,8 @@ export default function IndexedDailyPrices() {
             legend={true}
             showTooltipKeys={false}
             referenceLineData={referenceLineData}
+            tickCount={tickCountValue}
+            maxYAxisValue={computeMaxYAxisValue(totalPrices, tickCountValue)}
           />
           <Box sx={{ marginTop: '40px' }}>
             <SumPricesDisplay totalPrices={totalPricesData} />
