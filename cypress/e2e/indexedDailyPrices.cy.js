@@ -28,6 +28,15 @@ describe('Indexed daily prices spec', () => {
         data,
       ).as('mockedIndexed30TD')
     })
+    cy.fixture('indexedPrices61TD').then((data) => {
+      data.data.first_date = firstDate
+      data.data.last_date = lastDate
+      cy.intercept(
+        'GET',
+        '/data/indexed_prices?tariff=6.1TD&geo_zone=PENINSULA',
+        data,
+      ).as('mockedIndexed61TD')
+    })
     cy.fixture('compensationPrices').then((data) => {
       data.data.first_date = firstDate
       data.data.last_date = lastDate
@@ -68,6 +77,11 @@ describe('Indexed daily prices spec', () => {
   it('calls 3.0 prices API when 3.0 button clicked', () => {
     cy.get('[data-cy="button-3.0TD"]').click()
     cy.wait('@mockedIndexed30TD')
+    cy.get('.recharts-layer').should('be.visible')
+  })
+  it('calls 6.1 prices API when 6.1 button clicked', () => {
+    cy.get('[data-cy="button-6.1TD"]').click()
+    cy.wait('@mockedIndexed61TD')
     cy.get('.recharts-layer').should('be.visible')
   })
   it('calls compensation prices API when compensation button clicked', () => {
