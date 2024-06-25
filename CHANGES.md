@@ -2,6 +2,7 @@
 ## unreleased
 
 - Modify colors critetia: based in daily average instead of weekly average
+- Add 6.1TD indexada tariff button
 
 ## webforms-indexed-prices-ui-1.0.0 2024-05-10
 

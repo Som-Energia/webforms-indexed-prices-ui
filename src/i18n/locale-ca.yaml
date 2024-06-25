@@ -1,5 +1,6 @@
 TARIFF_SELECTOR:
   SURPLUS_COMPENSATION: Compensació d'excedents
+  TARIFF_61TD: 6.1TD Indexada
   TARIFF_30TD: 3.0TD Indexada
   TARIFF_20TD: 2.0TD Indexada
 CHART:
