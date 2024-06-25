@@ -8,6 +8,7 @@ import {
   computeTotals,
   dayIsMissing,
   computeMaxYAxisValue,
+  computeMinYAxisValue,
 } from '../../services/utils'
 import TariffSelector from '../../components/TariffSelector'
 import { useTariffNameContext } from '../../components/TariffNameContextProvider'
@@ -163,6 +164,7 @@ export default function IndexedDailyPrices() {
             referenceLineData={referenceLineData}
             tickCount={tickCountValue}
             maxYAxisValue={computeMaxYAxisValue(totalPrices, tickCountValue)}
+            minYAxisValue={computeMinYAxisValue(totalPrices, tickCountValue)}
           />
           <Box sx={{ marginTop: '40px' }}>
             <SumPricesDisplay totalPrices={totalPricesData} />
