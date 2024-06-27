@@ -3,6 +3,7 @@
 
 - Modify colors critetia: based in daily average instead of weekly average
 - Add 6.1TD indexada tariff button
+- Fix Y axis values when negative minimum
 
 ## webforms-indexed-prices-ui-1.0.0 2024-05-10
 

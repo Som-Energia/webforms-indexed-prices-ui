@@ -6,6 +6,7 @@ import {
   dayIsMissing,
   weekTimeInterval,
   computeMaxYAxisValue,
+  computeMinYAxisValue,
 } from './utils'
 
 describe('getPricesForPeriod', () => {
@@ -254,7 +255,7 @@ describe('computeMaxYAxisValue', () => {
 
       const result = computeMaxYAxisValue(totalPrices)
 
-      expect(result).toStrictEqual('auto')
+      expect(result).toStrictEqual('4.00')
     })
   })
   describe('when weekly average price is equal to daily maximum price', () => {
@@ -268,7 +269,7 @@ describe('computeMaxYAxisValue', () => {
 
       const result = computeMaxYAxisValue(totalPrices)
 
-      expect(result).toStrictEqual('auto')
+      expect(result).toStrictEqual('2.00')
     })
   })
   describe('when weekly average price is greater than daily maximum price', () => {
@@ -283,7 +284,38 @@ describe('computeMaxYAxisValue', () => {
 
       const result = computeMaxYAxisValue(totalPrices, tickCount)
 
-      const expectedResult = 4.57
+      const expectedResult = '4.57'
+      expect(result).toStrictEqual(expectedResult)
+    })
+  })
+  describe('when minimum price is greater than 0', () => {
+    it('returns the default behavior', () => {
+      const weekly_average_price = '4,00'
+      const minimum_price = '2,00'
+      const tickCount = 7
+      const totalPrices = {
+        WEEKLY_AVERAGE: weekly_average_price,
+        MIN: minimum_price
+      }
+
+      const result = computeMinYAxisValue(totalPrices, tickCount)
+
+      expect(result).toStrictEqual('0.00')
+    })
+  })
+  describe('when minimum price less than 0', () => {
+    it('returns the default behavior', () => {
+      const weekly_average_price = '4,00'
+      const minimum_price = '-2,00'
+      const tickCount = 7
+      const totalPrices = {
+        WEEKLY_AVERAGE: weekly_average_price,
+        MIN: minimum_price
+      }
+
+      const result = computeMinYAxisValue(totalPrices, tickCount)
+
+      const expectedResult = '-2.571'
       expect(result).toStrictEqual(expectedResult)
     })
   })
