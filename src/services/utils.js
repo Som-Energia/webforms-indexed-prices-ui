@@ -236,11 +236,10 @@ export function computeMaxYAxisValue(totalPrices, tickCount = 7) {
 }
 
 export function computeMinYAxisValue(totalPrices, tickCount = 7) {
-  let minYAxisValue = totalPrices['MIN']
+  let minYAxisValue = '0,00'
   let min_price = parseFloat(totalPrices['MIN'].replace(',','.'))
   let weekly_average_price = parseFloat(totalPrices['WEEKLY_AVERAGE'].replace(',','.'))
-  let max_price = parseFloat(totalPrices['MAX'].replace(',','.'))
-  if (weekly_average_price > max_price && min_price < 0)
+  if (min_price < 0)
     minYAxisValue = parseFloat(min_price - weekly_average_price / tickCount).toFixed(3)
   return minYAxisValue.replace(',','.')
 }
