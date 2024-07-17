@@ -11,8 +11,9 @@ function log_message () {
     echo "[$level] [$(date -u +"%Y-%m-%d %H:%M:%S")] $msg"
 }
 
-while getopts ":s:P:u:p:b:th" o; do
+while getopts ":s:P:u:p:b:tm:h" o; do
     case "${o}" in
+
         s)
             s=${OPTARG}
             ;;
@@ -28,12 +29,15 @@ while getopts ":s:P:u:p:b:th" o; do
         h)
             usage
             ;;
+        b)
+            build=$(OPTARG)
         *)
             ;;
     esac
 done
 if [ -z "$s" ]; then usage; fi
 if [ -z "$P" ]; then usage; fi
+if [ -z "$build" ]; then usage; fi
 if [ -z "$u" ]; then user="somdevel"; else user=$u; fi
 if [ -z "$p" ]; then port="22"; else port=$p; fi
 
@@ -47,7 +51,7 @@ alias_dir="build_$today"
 
 function build () {
     log_message "INFO" "Building project"
-    npm run build
+    npm run build:$build
 
     if [ $? != 0 ]
     then
