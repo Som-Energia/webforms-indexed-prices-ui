@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## webforms-indexed-prices-ui-1.0.2 2024-07-17
+
+- Fix: global css still interfering with wp
+- Build modes for publishing
+- Separate plausible configurations for each build mode
+- Automated deployment scripts based on private configurations
+
 ## webforms-indexed-prices-ui-1.0.1 2024-07-17
 
 - Modify colors critetia: based in daily average instead of weekly average
