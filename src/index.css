@@ -1,18 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800&display=swap');
-
-:root {
+#root {
   font-family: Montserrat, system-ui, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 700;
-
-  color-scheme: light dark;
-  color: #213547;
-  background-color: #ffffff;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-text-size-adjust: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
-

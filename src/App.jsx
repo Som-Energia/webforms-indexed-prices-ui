@@ -1,7 +1,6 @@
 import React from 'react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from '@mui/material/styles'
-import './App.css'
 import { TariffNameContextProvider } from './components/TariffNameContextProvider'
 import IndexedDailyPrices from './pages/IndexedDailyPrices'
 import IndexedHistoricPrices from './pages/IndexedHistoricPrices'
