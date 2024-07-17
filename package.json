@@ -1,7 +1,7 @@
 {
   "name": "webforms-indexed-prices",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -45,7 +45,7 @@
     "eslint-plugin-react-refresh": "^0.4.5",
     "jsdom": "^24.0.0",
     "moment": "^2.30.1",
-    "prettier": "3.2.5",
+    "prettier": "^3.2.5",
     "vite": "^5.1.4",
     "vitest": "^1.4.0"
   }
