@@ -44,6 +44,29 @@ npm install serve
 serve -s dist/
 ```
 
-## Deployment
+### Deployment
 
-Use the related script and internal documentation to deploy the project.
+If you are Som Energia staff you can clone
+`deployment-configurations` repository side by side,
+so that the links `scripts/deploy-*.conf` are not broken,
+and then:
+
+```bash
+make deploy-prod     # To deploy in production
+make deploy-testing  # To deploy in testing
+```
+
+If you are not SomEnergia staff you can create a deployment configuration
+```bash
+cat scripts/deploy-myserver.conf <<EOF
+DEPLOYMENT_BUILD=whatever  # will use .env.whatever as configuration
+DEPLOYMENT_HOST=myserver.com # ssh server
+DEPLOYMENT_PORT=22 # ssh port
+DEPLOYMENT_USER=myuser # ssh user
+DEPLOYMENT_PATH=/my/installation/path
+DEPLOYMENT_URL=https://myserver.com/path/to/the/page
+EOF
+
+scripts/deploy.sh myserver
+```
+

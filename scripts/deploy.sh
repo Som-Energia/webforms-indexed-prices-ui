@@ -14,7 +14,7 @@ die() {
 function log_message () {
     level="$1"
     msg="$2"
-    echo "[$level] [$(date -u +"%Y-%m-%d %H:%M:%S")] $msg"
+    echo -e "\033[32m[$level]\033[0m \033[33m[$(date -u +"%Y-%m-%d %H:%M:%S")]\033[0m $msg"
 }
 
 environment="$1"
@@ -32,8 +32,14 @@ cat "$environment_file"
 source "$environment_file"
 echo configuration loaded
 
-for var in DEPLOYMENT_BUILD DEPLOYMENT_HOST DEPLOYMENT_PORT DEPLOYMENT_USER DEPLOYMENT_PORT
-do
+for var in \
+    DEPLOYMENT_BUILD \
+    DEPLOYMENT_HOST \
+    DEPLOYMENT_PORT \
+    DEPLOYMENT_USER \
+    DEPLOYMENT_PATH \
+; do
+    echo "$var-${!var}"
     [ -z "${!var}" ] && die "Config $environment_file missing value for $var"
 done
 
@@ -81,7 +87,7 @@ alias_dir="build_$today"
 
 function build () {
     log_message "INFO" "Building project"
-    echo npm run build:$build
+    npm run build:$build
 
     if [ $? != 0 ]
     then
@@ -95,7 +101,7 @@ function upload () {
     export RSYNC_RSH
     log_message "INFO" "Uploading build build_$today to $deploy_server:$port"
     script_path=$(dirname $0)
-    echo rsync -avz $script_path/../dist/* $user@$deploy_server:$dest_dir
+    rsync -avz $script_path/../dist/* $user@$deploy_server:$dest_dir
     if [ $? != 0 ]
     then
         log_message "ERROR" "An error ocurred uploading code: $?"
@@ -103,7 +109,7 @@ function upload () {
     fi
 
     log_message "INFO" "Linking new build... "
-    echo ssh $user@$deploy_server -p $port "rm $app_dir; ln -s $alias_dir $app_dir"
+    ssh $user@$deploy_server -p $port "rm $app_dir; ln -s $alias_dir $app_dir"
     if [ $? != 0 ]
     then
         log_message "ERROR" "An error ocurred linking new build $?"
@@ -116,5 +122,7 @@ log_message "INFO" "Building the application"
 
 build
 upload
+log_message "INFO" "Opening browser at $DEPLOYMENT_URL"
+open "$DEPLOYMENT_URL"
 log_message "INFO" "Build finished, I did well my job!!"
 log_message "INFO" "REMIND TO CLEAR THE WORDPRESS CACHE! "
