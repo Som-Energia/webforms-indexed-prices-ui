@@ -26,11 +26,17 @@ ui-test-cypress-run:
 	@if ! curl -s "http://localhost:$(PORT)" > /dev/null 2>&1; then \
 		echo "\nRun 'make ui-dev' to start the application before running Cypress.\n"; \
 		exit 1; \
-    fi
+	fi
 	$(CYPRESS) run
 
 ui-test-cypress-open:
 	$(CYPRESS) open
+
+deploy-prod:
+	scripts/deploy.sh production
+
+deploy-testing:
+	scripts/deploy.sh testing
 
 style:
 	$(PRETTIER) --write ./src/ --config .prettierrc.yaml
