@@ -31,6 +31,7 @@ while getopts ":s:P:u:p:b:tm:h" o; do
             ;;
         b)
             build=$(OPTARG)
+            ;;
         *)
             ;;
     esac
