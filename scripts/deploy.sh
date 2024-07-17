@@ -30,7 +30,7 @@ while getopts ":s:P:u:p:b:tm:h" o; do
             usage
             ;;
         b)
-            build=$(OPTARG)
+            build=${OPTARG}
             ;;
         *)
             ;;
