@@ -1,20 +1,34 @@
 #!/bin/bash
 
 SCRIPTPATH=$(dirname $0)
+RED="\033[31;1m"
+GREEN="\033[32m"
+ORANGE="\033[33m"
+NC="\033[0m"
 
-function usage () {
-    echo "Usage: $0 <environment>" 1>&2
+usage () {
+    echo "Usage: $0 <environment>" >&2
+    echo "$(available_deploys)" >&2
     exit 1
 }
 
 die() {
-    echo -e "\033[31;1m$@\033[0m" >&2
+    echo -e "$RED$@$NC" >&2
     exit -1
 }
-function log_message () {
+log_message () {
     level="$1"
     msg="$2"
-    echo -e "\033[32m[$level]\033[0m \033[33m[$(date -u +"%Y-%m-%d %H:%M:%S")]\033[0m $msg"
+    echo -e "$GREEN[$level]$NC $ORANGE[$(date -u +"%Y-%m-%d %H:%M:%S")]$NC $msg"
+}
+
+available_deploys() {
+    echo "Available environments:"
+    for f in $SCRIPTPATH/deploy-*.conf;
+    do
+        mode=$(echo $f | sed 's/^.*deploy-\(.*\).conf/\1/')
+        [ -f "$f" ] && echo "✓ $mode" || echo "✘ $mode (may be a broken link)"
+    done
 }
 
 environment="$1"
@@ -25,7 +39,7 @@ environment_file="$SCRIPTPATH/deploy-$environment.conf"
 }       
         
 [ -f "$environment_file" ] || {
-    die "Environment '$environment' not available since '$environment_file' does not exist. Read the README for more info"
+    die "Environment '$environment' not available since '$environment_file' does not exist. Read the README for more info.\n$(available_deploys)"
 }
 
 source "$environment_file"
