@@ -28,22 +28,19 @@ environment_file="$SCRIPTPATH/deploy-$environment.conf"
     die "Environment '$environment' not available since '$environment_file' does not exist. Read the README for more info"
 }
 
-cat "$environment_file"
 source "$environment_file"
 echo configuration loaded
 
 for var in \
-    DEPLOYMENT_BUILD \
     DEPLOYMENT_HOST \
     DEPLOYMENT_PORT \
     DEPLOYMENT_USER \
     DEPLOYMENT_PATH \
 ; do
-    echo "$var-${!var}"
     [ -z "${!var}" ] && die "Config $environment_file missing value for $var"
 done
-
-build="$DEPLOYMENT_BUILD"
+build=build
+[ -z "$DEPLOYMENT_BUILD" ] || build="build:$DEPLOYMENT_BUILD"
 deploy_server=$DEPLOYMENT_HOST
 deploy_path=$DEPLOYMENT_PATH
 port="$DEPLOYMENT_PORT"
@@ -54,40 +51,9 @@ dest_dir="$deploy_path/build_$today"
 app_dir="$deploy_path/build"
 alias_dir="build_$today"
 
-while getopts ":s:P:u:p:b:tm:h" o; do
-    case "${o}" in
-
-        s)
-            s=${OPTARG}
-            ;;
-        P)
-            P=${OPTARG}
-            ;;
-        u)
-            u=${OPTARG}
-            ;;
-        p)
-            p=${OPTARG}
-            ;;
-        h)
-            usage
-            ;;
-        b)
-            build=${OPTARG}
-            ;;
-        *)
-            ;;
-    esac
-done
-
-today=$(date +"%Y-%m-%d_%H%M%S")
-dest_dir="$deploy_path/build_$today"
-app_dir="$deploy_path/build"
-alias_dir="build_$today"
-
 function build () {
-    log_message "INFO" "Building project"
-    npm run build:$build
+    log_message "INFO" "Building project $build"
+    npm run $build
 
     if [ $? != 0 ]
     then
@@ -122,7 +88,9 @@ log_message "INFO" "Building the application"
 
 build
 upload
-log_message "INFO" "Opening browser at $DEPLOYMENT_URL"
-open "$DEPLOYMENT_URL"
+[ -z "$DEPLOYMENT_URL" ] || {
+  log_message "INFO" "Opening browser at $DEPLOYMENT_URL"
+  open "$DEPLOYMENT_URL"
+}
 log_message "INFO" "Build finished, I did well my job!!"
 log_message "INFO" "REMIND TO CLEAR THE WORDPRESS CACHE! "
