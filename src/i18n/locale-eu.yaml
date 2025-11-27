@@ -4,16 +4,18 @@ TARIFF_SELECTOR:
   TARIFF_30TD: 3.0TD Indexada
   TARIFF_20TD: 2.0TD Indexada
 CHART:
-  WEEKLY_AVERAGE_LEGEND: Azken {{ base_days_computation }} egunetako batezbestekoa
+  WEEKLY_AVERAGE_LEGEND: Azken {{ base_days_computation }} egunetako 
+    batezbestekoa
   DAILY_AVERAGE_LEGEND: Eguneko batezbestekoa
 SUMPRICESDISPLAY:
   TOTAL_AVERAGE: EGUNEKO BATEZBESTEKOA
   TOTAL_MIN: GUTXIENEKO PREZIOA
   TOTAL_MAX: GEHIENEKO PREZIOA
-  TOTAL_WEEKLY_AVERAGE: AZKEN {{ base_days_computation }} EGUNETAKO BATEZBESTEKOA
+  TOTAL_WEEKLY_AVERAGE: AZKEN {{ base_days_computation }} EGUNETAKO 
+    BATEZBESTEKOA
 PRICES:
   ERROR_MISSING_DATA: Ez dago egun honetako daturik. Barkatu eragozpenak!
 API:
-  ERROR_FETCHING_DATA: Tamalez, intzidentzia bat dela eta, une honetan ezin dugu erakutsi
-    prezio-iragarpena. Espero dugu berehala konpontzea eta iragarpena lehenbailehen
-    erakutsi ahal izatea. Barkatu eragozpenak!
+  ERROR_FETCHING_DATA: Tamalez, intzidentzia bat dela eta, une honetan ezin dugu
+    erakutsi prezio-iragarpena. Espero dugu berehala konpontzea eta iragarpena 
+    lehenbailehen erakutsi ahal izatea. Barkatu eragozpenak!
