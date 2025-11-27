@@ -5,15 +5,17 @@ TARIFF_SELECTOR:
   TARIFF_20TD: 2.0TD indexada
 CHART:
   DAILY_AVERAGE_LEGEND: Promedio del día
-  WEEKLY_AVERAGE_LEGEND: Promedio de los últimos {{ base_days_computation }} días
+  WEEKLY_AVERAGE_LEGEND: Promedio de los últimos {{ base_days_computation }} 
+    días
 SUMPRICESDISPLAY:
   TOTAL_MIN: PRECIO MÍNIMO
   TOTAL_MAX: PRECIO MÁXIMO
   TOTAL_AVERAGE: PROMEDIO DEL DÍA
   TOTAL_WEEKLY_AVERAGE: 'PROMEDIO DE LOS ÚLTIMOS {{ base_days_computation }} DÍAS'
 PRICES:
-  ERROR_MISSING_DATA: No hay datos disponibles para esta fecha. ¡Disculpa las molestias!
+  ERROR_MISSING_DATA: No hay datos disponibles para esta fecha. ¡Disculpa las 
+    molestias!
 API:
-  ERROR_FETCHING_DATA: Lamentablemente, no podemos mostrar ahora la previsión de precios,
-    a causa de una incidencia. Esperamos que se pueda resolver en seguida y poder
-    mostrarla lo más pronto posible. Disculpa las molestias!
+  ERROR_FETCHING_DATA: Lamentablemente, no podemos mostrar ahora la previsión de
+    precios, a causa de una incidencia. Esperamos que se pueda resolver en 
+    seguida y poder mostrarla lo más pronto posible. ¡Disculpa las molestias!
